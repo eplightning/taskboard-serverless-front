@@ -5,7 +5,11 @@
   "dependencies": {
     "custom-react-scripts": "0.2.1",
     "history": "^4.7.2",
+    "lodash": "^4.17.4",
+    "material-ui": "^1.0.0-beta.25",
     "react": "^16.2.0",
+    "react-dnd": "^2.5.4",
+    "react-dnd-html5-backend": "^2.5.4",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
