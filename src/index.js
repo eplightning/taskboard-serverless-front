@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import './utils/rx-operators';
 import './styles/global.scss';
-import App from './App';
+import AppContainer from './containers/AppContainer';
 
 import { Provider } from 'react-redux';
 import { createReduxStore } from './utils/create-store';
@@ -13,7 +13,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 
 const history = createHistory();
 const store = createReduxStore(history);
-const AppWithDndContext = DragDropContext(HTML5Backend)(App);
+const AppWithDndContext = DragDropContext(HTML5Backend)(AppContainer);
 
 ReactDOM.render(
   <Provider store={store}>
