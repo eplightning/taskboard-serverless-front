@@ -2,27 +2,59 @@ import React, { Component } from 'react';
 
 import Typography from 'material-ui/Typography';
 
-import ExpansionPanel, {
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-} from 'material-ui/ExpansionPanel';
+import ExpansionPanel, { ExpansionPanelDetails, ExpansionPanelSummary, } from 'material-ui/ExpansionPanel';
 
-import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
+import { withStyles } from 'material-ui/styles';
+import Card, { CardActions, CardContent } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
-
-import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
 import Grid from 'material-ui/Grid';
 
 import Icon from 'material-ui/Icon';
 import Avatar from 'material-ui/Avatar';
 
-console.error(ExpansionPanel);
-console.error(ExpansionPanelSummary);
+import { Badge, CardHeader, Menu, MenuItem, Tooltip } from 'material-ui';
+import Task from './Task';
+import auth from '../../utils/auth';
 
-export default class Swimlane extends Component {
+const styles = theme => ({
+  actions: {
+    justifyContent: 'space-between'
+  },
+  smallAvatar: {
+    width: 35,
+    height: 35
+  },
+  title: {
+    fontSize: 18
+  },
+  pointInput: {
+    width: 40
+  }
+});
+
+class Swimlane extends Component {
+
+  state = {
+    anchorEl: null,
+  };
+
+  componentWillMount() {
+    auth.login();
+  }
+
+  handleClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
 
   render() {
+    const { classes } = this.props;
+    const { anchorEl } = this.state;
+
     return (
       <ExpansionPanel>
         <ExpansionPanelSummary expandIcon={<Icon>add_circle</Icon>}>
@@ -31,22 +63,9 @@ export default class Swimlane extends Component {
         <ExpansionPanelDetails>
           <Grid container spacing={8}>
             <Grid item xs={3}>
-              <Card onMouseDown={() => console.log('hmm')}>
-                <CardContent>
-                  <Typography>Opis taska</Typography>
-                </CardContent>
-                <CardActions>
-                  <Avatar>L</Avatar>
-                  <IconButton>
-                    <Icon>add_circle</Icon>
-                  </IconButton>
-                  <TextField value={5}
-          type="number"
-          margin="normal"
-        />
-                </CardActions>
-
-              </Card>
+              <Task></Task>
+              <Task></Task>
+              <Task></Task>
             </Grid>
             <Grid item xs={3}>
             </Grid>
@@ -60,3 +79,5 @@ export default class Swimlane extends Component {
     );
   }
 }
+
+export default withStyles(styles)(Swimlane);

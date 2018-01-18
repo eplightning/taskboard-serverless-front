@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "auth0-js": "^9.1.0",
     "custom-react-scripts": "0.2.1",
     "history": "^4.7.2",
     "lodash": "^4.17.4",
