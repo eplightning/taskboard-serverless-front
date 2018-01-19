@@ -56,7 +56,7 @@ class ProjectsView extends Component {
           <Grid item sm={6}>
             <Card>
               <Toolbar className={classes.toolbar}>
-                <Button raised color="primary">
+                <Button raised color="primary" component={Link} to="/projects/add">
                   Add project
                 </Button>
               </Toolbar>
