@@ -8,7 +8,7 @@ class Home extends Component {
 
   render() {
     return <div className="homeContainer">
-      <Button raised component={Link} to="/sprint/15">Start</Button>
+      <Button raised component={Link} to="/projects">Start</Button>
     </div>;
   }
 
