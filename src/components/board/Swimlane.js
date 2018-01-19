@@ -16,6 +16,7 @@ import Avatar from 'material-ui/Avatar';
 import { Badge, CardHeader, Menu, MenuItem, Tooltip } from 'material-ui';
 import Task from './Task';
 import auth from '../../utils/auth';
+import SwimlaneColumn from './SwimlaneColumn';
 
 const styles = theme => ({
   actions: {
@@ -40,7 +41,7 @@ class Swimlane extends Component {
   };
 
   componentWillMount() {
-    auth.login();
+    // auth.login();
   }
 
   handleClick = event => {
@@ -62,17 +63,18 @@ class Swimlane extends Component {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Grid container spacing={8}>
-            <Grid item xs={3}>
+            <SwimlaneColumn>
               <Task></Task>
+            </SwimlaneColumn>
+            <SwimlaneColumn>
               <Task></Task>
+            </SwimlaneColumn>
+            <SwimlaneColumn>
               <Task></Task>
-            </Grid>
-            <Grid item xs={3}>
-            </Grid>
-            <Grid item xs={3}>
-            </Grid>
-            <Grid item xs={3}>
-            </Grid>
+            </SwimlaneColumn>
+            <SwimlaneColumn>
+              <Task></Task>
+            </SwimlaneColumn>
           </Grid>
         </ExpansionPanelDetails>
       </ExpansionPanel>

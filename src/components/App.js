@@ -13,7 +13,7 @@ class App extends Component {
       <React.Fragment>
         <Header></Header>
         <div>
-          <Route exact path="/" component={Header} />
+          <Route exact path="/" component={SprintContainer} />
           <Route exact path="/sprint/:id" component={SprintContainer} />
         </div>
       </React.Fragment>

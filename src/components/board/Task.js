@@ -78,7 +78,7 @@ class Task extends Component {
     const { classes } = this.props;
     const { anchorEl } = this.state;
 
-    return (<div>
+    return connectDragSource(<div>
         <Card onMouseDown={() => console.log('hmm')}>
           <Menu
             anchorEl={anchorEl}
