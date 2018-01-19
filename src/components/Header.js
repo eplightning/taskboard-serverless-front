@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import Typography from 'material-ui/Typography';
 import {
-  AppBar, Avatar, Drawer, Icon, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Toolbar,
+  AppBar, Avatar, Divider, Drawer, Icon, IconButton, List, ListItem, ListItemIcon, ListItemText, ListSubheader, Menu,
+  MenuItem,
+  Toolbar,
   withStyles
 } from 'material-ui';
+import { Link } from 'react-router-dom';
 
 const styles = {
   root: {
@@ -57,18 +60,57 @@ class Header extends Component {
 
     const sideList = (
       <div className={classes.list}>
-        <List>
+        <List subheader={<ListSubheader>Navigation</ListSubheader>}>
+          <ListItem button component={Link} to="/">
+            <ListItemIcon>
+              <Icon>home</Icon>
+            </ListItemIcon>
+            <ListItemText primary="Homepage" />
+          </ListItem>
           <ListItem button>
             <ListItemIcon>
-              <Icon>menu</Icon>
+              <Icon>folder</Icon>
             </ListItemIcon>
-            <ListItemText primary="Inbox" />
+            <ListItemText primary="Projects view" />
+          </ListItem>
+        </List>
+        <Divider />
+        <List subheader={<ListSubheader>Projects</ListSubheader>}>
+          <ListItem button>
+            <ListItemIcon>
+              <Avatar>e</Avatar>
+            </ListItemIcon>
+            <ListItemText primary="eLF Konfigurator" />
+          </ListItem>
+          <ListItem button>
+            <ListItemIcon>
+              <Avatar>O</Avatar>
+            </ListItemIcon>
+            <ListItemText primary="Other project" />
+          </ListItem>
+          <ListItem button>
+            <ListItemIcon>
+              <Avatar>P</Avatar>
+            </ListItemIcon>
+            <ListItemText primary="Project 2" />
+          </ListItem>
+        </List>
+        <Divider />
+        <List subheader={<ListSubheader>Sprints</ListSubheader>}>
+          <ListItem button>
+            <ListItemText primary="Sprint 15" />
+          </ListItem>
+          <ListItem button>
+            <ListItemText primary="Sprint 14" />
+          </ListItem>
+          <ListItem button>
+            <ListItemText primary="Sprint 13" />
           </ListItem>
         </List>
       </div>
     );
 
-    return <AppBar position="sticky" className={classes.appBar}>
+    return <AppBar className={classes.appBar}>
       <Toolbar>
         <Drawer open={test} onClose={() => this.handle(false)}>
           <div
@@ -110,8 +152,7 @@ class Header extends Component {
               open={open}
               onClose={this.handleClose}
             >
-              <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-              <MenuItem onClick={this.handleClose}>My account</MenuItem>
+              <MenuItem onClick={this.handleClose}>Logout</MenuItem>
             </Menu>
           </div>
         )}

@@ -4,7 +4,17 @@ import Typography from 'material-ui/Typography';
 import '../styles/App.scss';
 import Header from './Header';
 import SprintContainer from '../containers/SprintContainer';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import RequireAuth from '../containers/RequireAuth';
+import Home from './Home';
+
+const AuthProtected = () => {
+  return <RequireAuth>
+    <Switch>
+      <Route exact path="/sprint/:id" component={SprintContainer} />
+    </Switch>
+  </RequireAuth>;
+};
 
 class App extends Component {
 
@@ -12,10 +22,10 @@ class App extends Component {
     return (
       <React.Fragment>
         <Header></Header>
-        <div>
-          <Route exact path="/" component={SprintContainer} />
-          <Route exact path="/sprint/:id" component={SprintContainer} />
-        </div>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route component={AuthProtected} />
+        </Switch>
       </React.Fragment>
     );
   }
