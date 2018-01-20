@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import '../styles/Home.scss';
-import { TextField, withStyles } from 'material-ui';
+import { TextField, withStyles, Toolbar, Button } from 'material-ui';
+import { Link } from 'react-router-dom';
+import Formsy from 'formsy-react';
+import TextFormInput from './input/TextFormInput';
+import UserSelectInput from './input/UserSelectInput';
 
 const styles = theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
+    padding: [[0, '20px']]
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -15,11 +20,15 @@ const styles = theme => ({
   menu: {
     width: 200,
   },
+  toolbar: {
+    justifyContent: 'flex-end'
+  },
 });
 
 class ProjectForm extends Component {
 
   state = {
+    valid: true,
     name: 'Cat in the Hat',
     age: '',
     multiline: 'Controlled',
@@ -32,38 +41,38 @@ class ProjectForm extends Component {
     });
   };
 
+  handleValid = () => {
+    this.setState({ valid: true });
+  }
+
+  handleInvalid = () => {
+    this.setState({ valid: false });
+  }
+
   render() {
     const { classes } = this.props;
+    const { valid } = this.state;
 
-    return <form className={classes.container} noValidate autoComplete="off">
-      <TextField
-        fullWidth
-        id="name"
-        label="Name"
-        className={classes.textField}
-        value={this.state.name}
-        onChange={this.handleChange('name')}
-        margin="normal"
-      />
-      <TextField
-        id="name"
-        label="Name"
-        className={classes.textField}
-        value={this.state.name}
-        onChange={this.handleChange('name')}
-        margin="normal"
-      />
-      <TextField
-        id="name"
-        label="Name"
-        className={classes.textField}
-        value={this.state.name}
-        onChange={this.handleChange('name')}
-        margin="normal"
-      />
-
-
-    </form>;
+    return <Formsy onValid={this.handleValid} onInvalid={this.handleInvalid}>
+      <Toolbar className={classes.toolbar}>
+        <Button disabled={!valid} raised color="primary" component={Link} to="/projects/add">
+          Save
+        </Button>
+      </Toolbar>
+      <div className={classes.container}>
+        <TextFormInput
+          label="Project name"
+          name="name"
+          value="Start"
+          required
+        />
+        <UserSelectInput
+          label="Members"
+          name="members"
+          value={['wrexdot@gmail.com', 'test@gmail.com']}
+        />
+      </div>
+    </Formsy>;
   }
 
 }
