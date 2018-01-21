@@ -20,6 +20,7 @@ import {
 import Task from './Task';
 import auth from '../../utils/auth';
 import SwimlaneColumn from './SwimlaneColumn';
+import { Link } from 'react-router-dom';
 
 const styles = theme => ({
   actions: {
@@ -111,7 +112,7 @@ class Swimlane extends Component {
           <ExpansionPanelActions>
             <Button dense>Edit</Button>
             <Button dense color="accent" onClick={this.confirmRemoval}>Remove</Button>
-            <Button dense color="primary">
+            <Button dense color="primary" component={Link} to="/sprints/15/tasks/add/aaaaa-aa-aa">
               Add new task
             </Button>
           </ExpansionPanelActions>

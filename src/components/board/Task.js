@@ -16,6 +16,7 @@ import {
 } from 'material-ui';
 import { withStyles } from 'material-ui/styles';
 import { DragSource } from 'react-dnd';
+import { Link } from 'react-router-dom';
 
 const styles = theme => ({
   actions: {
@@ -86,7 +87,7 @@ class Task extends Component {
             onClose={this.handleClose}
             onMouseDown={(event) => event.stopPropagation()}
           >
-            <MenuItem onClick={this.handleClose}>Edit</MenuItem>
+            <MenuItem component={Link} to="/sprints/15/tasks/edit/a">Edit</MenuItem>
             <MenuItem onClick={this.handleClose}>Remove</MenuItem>
           </Menu>
           <CardHeader

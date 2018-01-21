@@ -8,15 +8,21 @@ import { Route, Switch } from 'react-router-dom';
 import RequireAuth from '../containers/RequireAuth';
 import Home from './Home';
 import ProjectsView from './ProjectsView';
+import SprintForm from './SprintForm';
 import { Reboot } from 'material-ui';
 import ProjectForm from './ProjectForm';
+import SwimlaneForm from './SwimlaneForm';
+import TaskForm from './TaskForm';
 
 const AuthProtected = () => {
   return <RequireAuth>
     <Switch>
       <Route exact path="/projects" component={ProjectsView} />
       <Route exact path="/projects/add" component={ProjectForm} />
-      <Route exact path="/sprint/:id" component={SprintContainer} />
+      <Route exact path="/sprints/add" component={SprintForm} />
+      <Route exact path="/sprints/:id/board" component={SprintContainer} />
+      <Route exact path="/sprints/:id/swimlanes/add" component={SwimlaneForm} />
+      <Route exact path="/sprints/:id/tasks/add/:swimlane" component={TaskForm} />
     </Switch>
   </RequireAuth>;
 };

@@ -23,7 +23,7 @@ const userReducer = createReducer(initialStateTree.user, {
       ...state,
       signedIn: true,
       accessToken: action.payload.accessToken,
-      idToken: action.payload.accessToken,
+      idToken: action.payload.idToken,
       expiresAt: action.payload.expiresAt,
       profile: action.payload.profile
     }
@@ -33,7 +33,7 @@ const userReducer = createReducer(initialStateTree.user, {
       ...state,
       signedIn: true,
       accessToken: action.payload.accessToken,
-      idToken: action.payload.accessToken,
+      idToken: action.payload.idToken,
       expiresAt: action.payload.expiresAt,
       profile: action.payload.profile
     }

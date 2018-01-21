@@ -89,12 +89,12 @@ class ProjectsView extends Component {
           <Grid item sm={6}>
             <Card>
               <Toolbar className={classes.toolbar}>
-                <Button raised color="primary">
+                <Button raised color="primary" component={Link} to="/sprints/add">
                   Add sprint
                 </Button>
               </Toolbar>
               <List subheader={<ListSubheader>Sprints</ListSubheader>}>
-                <ListItem button component={Link} to="/sprint/15">
+                <ListItem button component={Link} to="/sprints/15/board">
                   <ListItemText primary="Sprint 16" secondary="01.01.2010 - 15.01.2010" />
                   <ListItemSecondaryAction>
                     <IconButton aria-label="Edit" onClick={this.handleClick}>
@@ -102,7 +102,7 @@ class ProjectsView extends Component {
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
-                <ListItem button component={Link} to="/sprint/15">
+                <ListItem button component={Link} to="/sprints/15/board">
                   <ListItemText primary="Sprint 15" secondary="01.01.2010 - 15.01.2010" />
                   <ListItemSecondaryAction>
                     <IconButton aria-label="Edit" onClick={this.handleClick}>
