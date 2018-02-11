@@ -1,12 +1,24 @@
 import React, { Component } from 'react';
 import Typography from 'material-ui/Typography';
 import {
-  AppBar, Avatar, Divider, Drawer, Icon, IconButton, List, ListItem, ListItemIcon, ListItemText, ListSubheader, Menu,
+  AppBar,
+  Avatar,
+  Divider,
+  Drawer,
+  Icon,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+  Menu,
   MenuItem,
   Toolbar,
   withStyles
 } from 'material-ui';
 import { Link } from 'react-router-dom';
+import gravatar from 'gravatar';
 
 const styles = {
   root: {
@@ -32,31 +44,48 @@ const styles = {
 class Header extends Component {
 
   state = {
-    auth: true,
     anchorEl: null,
-    test: false
-  };
-
-  handleChange = (event, checked) => {
-    this.setState({ auth: checked });
+    drawerOpen: false
   };
 
   handleMenu = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handle = val => {
-    this.setState({test: val});
-  };
-
-  handleClose = () => {
+  logout = () => {
     this.setState({ anchorEl: null });
   };
 
+  handleDrawerOpen = () => {
+    this.setState({ drawerOpen: true });
+  };
+
+  handlerDrawerClose = () => {
+    this.setState({ drawerOpen: false });
+  };
+
   render() {
-    const { classes, title } = this.props;
-    const { auth, anchorEl, test } = this.state;
-    const open = Boolean(anchorEl);
+    const { classes, title, signedIn, email, activeProject } = this.props;
+    const { anchorEl, drawerOpen } = this.state;
+    const menuOpen = !!anchorEl;
+
+    const projects = this.props.projects || [];
+    const sprints = this.props.sprints || [];
+
+    const projectsList = projects.map(a =>
+      <ListItem button component={Link} to={'/projects/view/' + a.id}>
+        <ListItemIcon>
+          <Avatar>{a.name.charAt(0)}</Avatar>
+        </ListItemIcon>
+        <ListItemText primary={a.name} />
+      </ListItem>
+    );
+
+    const sprintsList = sprints.map(a =>
+      <ListItem button component={Link} to={'/sprints/board/' + activeProject + '/' + a.id}>
+        <ListItemText primary={a.name} />
+      </ListItem>
+    );
 
     const sideList = (
       <div className={classes.list}>
@@ -65,94 +94,62 @@ class Header extends Component {
             <ListItemIcon>
               <Icon>home</Icon>
             </ListItemIcon>
-            <ListItemText primary="Homepage" />
+            <ListItemText primary="Homepage"/>
           </ListItem>
-          <ListItem button component={Link} to="/projects">
+          {signedIn && <ListItem button component={Link} to="/projects">
             <ListItemIcon>
               <Icon>folder</Icon>
             </ListItemIcon>
-            <ListItemText primary="Projects view" />
-          </ListItem>
+            <ListItemText primary="Projects view"/>
+          </ListItem>}
         </List>
-        <Divider />
+        <Divider/>
+        {signedIn && <React.Fragment>
         <List subheader={<ListSubheader>Projects</ListSubheader>}>
-          <ListItem button>
-            <ListItemIcon>
-              <Avatar>e</Avatar>
-            </ListItemIcon>
-            <ListItemText primary="eLF Konfigurator" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <Avatar>O</Avatar>
-            </ListItemIcon>
-            <ListItemText primary="Other project" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <Avatar>P</Avatar>
-            </ListItemIcon>
-            <ListItemText primary="Project 2" />
-          </ListItem>
+          {projectsList}
         </List>
-        <Divider />
+        <Divider/>
         <List subheader={<ListSubheader>Sprints</ListSubheader>}>
-          <ListItem button>
-            <ListItemText primary="Sprint 15" />
-          </ListItem>
-          <ListItem button>
-            <ListItemText primary="Sprint 14" />
-          </ListItem>
-          <ListItem button>
-            <ListItemText primary="Sprint 13" />
-          </ListItem>
-        </List>
+          {sprintsList}
+        </List></React.Fragment>}
       </div>
     );
 
     return <AppBar className={classes.appBar}>
       <Toolbar>
-        <Drawer open={test} onClose={() => this.handle(false)}>
+        <Drawer open={drawerOpen} onClose={this.handlerDrawerClose}>
           <div
             tabIndex={0}
             role="button"
-            onClick={() => this.handle(false)}
-            onKeyDown={() => this.handle(false)}
+            onClick={() => this.handleDrawerOpen}
+            onKeyDown={() => this.handleDrawerOpen}
           >
             {sideList}
           </div>
         </Drawer>
-        <IconButton className={classes.menuButton} color="contrast" aria-label="Menu" onClick={() => this.handle(true)}>
+        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.handleDrawerOpen}>
           <Icon>menu</Icon>
         </IconButton>
-        <Typography type="title" color="inherit" className={classes.flex}>
+        <Typography variant="title" color="inherit" className={classes.flex}>
           {title || 'Task Board'}
         </Typography>
-        {auth && (
+        {signedIn && (
           <div>
             <IconButton
-              aria-owns={open ? 'menu-appbar' : null}
+              aria-owns={menuOpen ? 'menu-appbar' : null}
               aria-haspopup="true"
               onClick={this.handleMenu}
               color="contrast"
             >
-              <Avatar>L</Avatar>
+              <Avatar src={gravatar.url(email)}></Avatar>
             </IconButton>
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={open}
+              open={menuOpen}
               onClose={this.handleClose}
             >
-              <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+              <MenuItem onClick={this.logout}>Logout</MenuItem>
             </Menu>
           </div>
         )}
@@ -160,6 +157,5 @@ class Header extends Component {
     </AppBar>;
   }
 }
-
 
 export default withStyles(styles)(Header);

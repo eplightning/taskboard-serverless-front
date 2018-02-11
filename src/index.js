@@ -15,10 +15,13 @@ import { ConnectedRouter, push } from 'react-router-redux';
 import { Route, Switch } from 'react-router-dom';
 import Loader from './components/Loader';
 import { userSessionSet } from './redux/actions/user';
+import { api } from './utils/api';
 
 const history = createHistory();
 const store = createReduxStore(history);
 const AppWithDndContext = DragDropContext(HTML5Backend)(AppContainer);
+
+api.updateStore(store);
 
 const renderApplication = () => ReactDOM.render(
   <Provider store={store}>

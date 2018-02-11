@@ -1,5 +1,4 @@
 export function userSessionSet(authResult, callback = true) {
-  console.log(authResult);
   return {
     type: 'USER_SESSION_SET_' + (callback ? 'CALLBACK' : 'REFRESH'),
     payload: {

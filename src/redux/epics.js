@@ -4,6 +4,24 @@ import auth from '../utils/auth';
 import { userSessionSet } from './actions/user';
 
 import { Observable } from 'rxjs';
+import { api } from '../utils/api';
+import { loadProjectsDone, loadSprintsDone } from './actions/project';
+
+const loadProjectsEpic = (action$, store) => {
+  return action$
+    .filter(a => a.type === 'PROJECT_LOAD_INIT')
+    .switchMap(() => api.get('projects'))
+    .map(projects => loadProjectsDone(projects))
+    .catch((err) => Observable.of(loadProjectsDone(null, err)));
+};
+
+const loadSprintsEpic = (action$, store) => {
+  return action$
+    .filter(a => a.type === 'SPRINT_LOAD_INIT')
+    .switchMap((a) => api.get('projects/' + a.payload.project + '/sprints'))
+    .map(sprints => loadSprintsDone(sprints))
+    .catch((err) => Observable.of(loadSprintsDone(null, err)));
+};
 
 const authCallbackEpic = (action$, store) => {
   return action$
@@ -24,6 +42,7 @@ const authTokenRefreshEpic = (action$, store) => {
     .switchMap(a => {
       if (a.type === 'USER_LOGOUT') {
         auth.logout();
+        window.location.href = '/';
         return Observable.empty();
       } else {
         const timeLeft = a.payload.expiresAt - new Date().getTime();
@@ -37,5 +56,7 @@ const authTokenRefreshEpic = (action$, store) => {
 
 export const epics = [
   authCallbackEpic,
-  authTokenRefreshEpic
+  authTokenRefreshEpic,
+  loadProjectsEpic,
+  loadSprintsEpic
 ];
