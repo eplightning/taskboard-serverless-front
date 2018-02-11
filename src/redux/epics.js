@@ -14,7 +14,7 @@ import {
   loadProjectsDone,
   loadSprintsDone
 } from './actions/project';
-import { loadBoardDone } from './actions/board';
+import { loadBoardDone, moveTaskDone, updatePointsDone } from './actions/board';
 import { getMembersDone } from './actions/task';
 
 const loadProjectsEpic = (action$, store) => {
@@ -110,7 +110,22 @@ const loadBoardEpic = (action$, store) => {
     .ofType('BOARD_LOAD_INIT')
     .switchMap((a) => api.get('projects/' + a.payload.project + '/sprints/' + a.payload.sprint + '/board'))
     .map(response => loadBoardDone(response.project_id, response.id, response))
-    // .catch((err) => Observable.of(loadBoardDone(null, err)));
+    .catch((err) => Observable.empty());
+};
+
+const moveBoardEpic = (action$, store) => {
+  return action$
+    .ofType('BOARD_MOVE_INIT')
+    .switchMap((a) => api.put('projects/' + a.payload.project + '/tasks/' + a.payload.task + '/position', a.payload.data))
+    .map(response => moveTaskDone(response))
+    .catch((err) => Observable.empty());
+};
+
+const pointsBoardEpic = (action$, store) => {
+  return action$
+    .ofType('BOARD_POINTS_INIT')
+    .switchMap((a) => api.put('projects/' + a.payload.project + '/tasks/' + a.payload.task + '/points', a.payload.data))
+    .map(response => updatePointsDone(response))
     .catch((err) => Observable.empty());
 };
 
@@ -184,6 +199,8 @@ export const epics = [
 
   // board
   loadBoardEpic,
+  moveBoardEpic,
+  pointsBoardEpic,
 
   // swimlane actions
   addSwimlaneEpic,

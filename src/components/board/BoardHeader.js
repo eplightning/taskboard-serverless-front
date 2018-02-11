@@ -35,7 +35,7 @@ class BoardHeader extends Component {
         </Grid>
         <Grid item xs={3}>
           <span>In progress</span>
-          <span className={classes.total}>{totals['in-progress']}</span>
+          <span className={classes.total}>{totals.in_progress}</span>
         </Grid>
         <Grid item xs={3}>
           <span>Completed</span>

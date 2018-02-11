@@ -17,6 +17,7 @@ import {
 import { withStyles } from 'material-ui/styles';
 import { DragSource } from 'react-dnd';
 import { Link } from 'react-router-dom';
+import gravatar from 'gravatar';
 
 const styles = theme => ({
   actions: {
@@ -37,12 +38,13 @@ const styles = theme => ({
 const boxSource = {
   beginDrag(props) {
     return {
-      name: props.name,
+      task: props.task,
+      swimlane: props.task.swimlane_id,
+      state: props.task.state
     }
   },
 
   canDrag(props) {
-    console.log('canDrag');
     return true;
   },
 
@@ -50,8 +52,8 @@ const boxSource = {
     const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
 
-    if (dropResult) {
-      alert(`You dropped ${item.name} into ${dropResult.name}!`) // eslint-disable-line no-alert
+    if (dropResult && (item.swimlane !== dropResult.swimlane || item.state !== dropResult.state)) {
+      props.moveTask(item.task, dropResult.swimlane, dropResult.state);
     }
   },
 };
@@ -64,6 +66,22 @@ class Task extends Component {
 
   state = {
     anchorEl: null,
+    focused: false,
+    points: ''
+  };
+
+  handleFocus = () => {
+    this.setState({ points: this.props.task.points, focused: true });
+  };
+
+  handleChange = (event) => {
+    this.setState({ points: event.target.value });
+  };
+
+  handleBlur = () => {
+    const points = this.state.points;
+    this.setState({ points: '', focused: false});
+    this.props.updatePoints(this.props.task, points != null && points !== '' ? parseInt(points) : null);
   };
 
   handleClick = event => {
@@ -75,19 +93,34 @@ class Task extends Component {
   };
 
   render() {
-    const { isDragging, connectDragSource } = this.props;
+    const { isDragging, connectDragSource, task } = this.props;
     const { classes } = this.props;
-    const { anchorEl } = this.state;
+    const { anchorEl, focused, points } = this.state;
+
+    let userAvatar = null;
+
+    if (task.assigned_members.length === 1) {
+      userAvatar = <Tooltip title={task.assigned_members[0]} placement="right">
+          <Avatar className={classes.smallAvatar} src={gravatar.url(task.assigned_members[0])} />
+        </Tooltip>;
+    } else if (task.assigned_members.length > 1) {
+      userAvatar = <Badge badgeContent={task.assigned_members.length} color="primary">
+        <Tooltip title={task.assigned_members.join(' ')} placement="right">
+          <Avatar className={classes.smallAvatar}>?</Avatar>
+        </Tooltip>
+      </Badge>;
+    }
 
     return connectDragSource(<div>
-        <Card onMouseDown={() => console.log('hmm')}>
+        <Card>
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={this.handleClose}
             onMouseDown={(event) => event.stopPropagation()}
           >
-            <MenuItem component={Link} to="/sprints/15/tasks/edit/a">Edit</MenuItem>
+            <MenuItem component={Link}
+                      to={'/tasks/edit/' + task.project_id + '/' + task.sprint_id + '/' + task.id}>Edit</MenuItem>
             <MenuItem onClick={this.handleClose}>Remove</MenuItem>
           </Menu>
           <CardHeader
@@ -99,31 +132,23 @@ class Task extends Component {
                 <Icon>more_vert</Icon>
               </IconButton>
             }
-            title={<span className={classes.title}>Jakiś tytuł kartki bo gdzieś trzeba to wprowadzić co nie troche dłuższy też można</span>}
+            title={<span className={classes.title}>{task.name}</span>}
           >
           </CardHeader>
           <CardContent>
             <Typography>
-              Opis kartki Opis kartki Opis kartki Opis kartki Opis kartki Opis kartki Opis kartki
+              {task.description}
             </Typography>
           </CardContent>
           <CardActions className={classes.actions}>
-            <Badge badgeContent={1} color="primary">
-              <Tooltip title="Bartosz Sławianowski" placement="right">
-                <Avatar className={classes.smallAvatar}>G</Avatar>
-              </Tooltip>
-            </Badge>
-            <TextField value={5}
+            {userAvatar}
+            <TextField value={(focused ? points : task.points) || ''}
                        className={classes.pointInput}
+                       onChange={this.handleChange}
+                       onFocus={this.handleFocus}
+                       onBlur={this.handleBlur}
                        type="number"
                        margin="normal"
-                       onFocus={() => console.log('focus')}
-                       onBlur={() => console.log('blur')}
-                       onMouseDown={($event) => {
-                         console.log('CLICK');
-                         console.log('hmm2')
-                       }}
-
             />
           </CardActions>
 

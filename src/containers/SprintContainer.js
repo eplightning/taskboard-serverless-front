@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Board from '../components/board/Board';
-import { loadBoard } from '../redux/actions/board';
+import { loadBoard, moveTask, updatePoints } from '../redux/actions/board';
 import Loader from '../components/Loader';
 import Swimlane from '../components/board/Swimlane';
 import SwimlaneColumn from '../components/board/SwimlaneColumn';
@@ -15,8 +15,14 @@ class SprintContainer extends Component {
     this.props.loadBoard(props.match.params.project, props.match.params.sprint);
   }
 
+  makeTasks(tasks) {
+    return tasks.map(task =>
+      <Task task={task} key={task.id} moveTask={this.props.moveTask} updatePoints={this.props.updatePoints} />
+    );
+  }
+
   render() {
-    const { match, loaded, board, ...other } = this.props;
+    const { match, loaded, board, moveTask, ...other } = this.props;
 
     if (!loaded) {
       return <Loader/>;
@@ -25,19 +31,17 @@ class SprintContainer extends Component {
     const swimlanes = board.view.map(swimlaneWithTasks => {
       const tasks = (
         <React.Fragment>
-          <SwimlaneColumn>
-            <Task></Task>
-            <Task></Task>
+          <SwimlaneColumn swimlane={swimlaneWithTasks.swimlane.id} state="new">
+            {this.makeTasks(swimlaneWithTasks.tasks['new'])}
           </SwimlaneColumn>
-          <SwimlaneColumn>
-            <Task>
-            </Task>
+          <SwimlaneColumn swimlane={swimlaneWithTasks.swimlane.id} state="in_progress">
+            {this.makeTasks(swimlaneWithTasks.tasks['in_progress'])}
           </SwimlaneColumn>
-          <SwimlaneColumn>
-            <Task></Task>
+          <SwimlaneColumn swimlane={swimlaneWithTasks.swimlane.id} state="done">
+            {this.makeTasks(swimlaneWithTasks.tasks['done'])}
           </SwimlaneColumn>
-          <SwimlaneColumn>
-            <Task></Task>
+          <SwimlaneColumn swimlane={swimlaneWithTasks.swimlane.id} state="blocked">
+            {this.makeTasks(swimlaneWithTasks.tasks['blocked'])}
           </SwimlaneColumn>
         </React.Fragment>
       );
@@ -55,4 +59,4 @@ class SprintContainer extends Component {
 export default connect((state) => ({
   board: state.sprint.board.view,
   loaded: state.sprint.loaded
-}), { loadBoard })(SprintContainer);
+}), { loadBoard, moveTask, updatePoints })(SprintContainer);

@@ -1,4 +1,5 @@
 import { createReducer } from './reducers/utils'
+import { updateBoardTask } from '../utils/board';
 
 const initialStateTree = {
   project: {
@@ -27,7 +28,9 @@ const initialStateTree = {
 
 const sprintReducer = createReducer(initialStateTree.sprint, {
   'BOARD_LOAD_DONE': (state, action) => ({ ...state, loaded: true, board: action.payload.board }),
-  'BOARD_LOAD_INIT': (state, action) => ({ ...state, loaded: false, board: {} })
+  'BOARD_LOAD_INIT': (state, action) => ({ ...state, loaded: false, board: {} }),
+  'BOARD_MOVE_DONE': (state, action) => ({ ...state, board: updateBoardTask(state.board, action.payload.task) }),
+  'BOARD_POINTS_DONE': (state, action) => ({ ...state, board: updateBoardTask(state.board, action.payload.task) }),
 });
 
 const formReducer = createReducer(initialStateTree.form, {

@@ -19,7 +19,7 @@ function filterByState(tasks, state) {
 }
 
 function updateHeaders(headers, state, tasks) {
-
+  headers[state] = headers[state] + tasks.reduce((prev, current) => prev + current.points, 0);
 }
 
 function calculateView(tasks, swimlanes) {
@@ -37,7 +37,7 @@ function calculateView(tasks, swimlanes) {
 
     for (const state of ['new', 'in_progress', 'done', 'blocked']) {
       byState[state] = filterByState(ourTasks, state);
-      updateHeaders(headers, state, ourTasks);
+      updateHeaders(headers, state, byState[state]);
     }
 
     return {
