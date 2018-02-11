@@ -12,7 +12,7 @@ class AssignedUserInput extends Component {
 
     const formValue = getValue() || [];
 
-    return <FormControl margin="normal" fullWidth>
+    return <FormControl margin="dense" fullWidth>
       <InputLabel>{label}</InputLabel>
       <Select
         fullWidth
@@ -20,7 +20,7 @@ class AssignedUserInput extends Component {
         error={!isValid()}
         value={formValue}
         onChange={this.changeValue}
-        margin="normal"
+        margin="dense"
         name={name}
       >
         {options.map(a => {

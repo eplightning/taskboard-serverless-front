@@ -8,7 +8,13 @@ const initialStateTree = {
   },
   form: {
     data: {},
-    loaded: false
+    loaded: false,
+    members: [],
+    membersLoaded: false
+  },
+  sprint: {
+    loaded: false,
+    board: {}
   },
   user: {
     signedIn: false,
@@ -19,6 +25,11 @@ const initialStateTree = {
   }
 };
 
+const sprintReducer = createReducer(initialStateTree.sprint, {
+  'BOARD_LOAD_DONE': (state, action) => ({ ...state, loaded: true, board: action.payload.board }),
+  'BOARD_LOAD_INIT': (state, action) => ({ ...state, loaded: false, board: {} })
+});
+
 const formReducer = createReducer(initialStateTree.form, {
   'PROJECT_GET_INIT': (state, action) => ({ ...state, data: {}, loaded: false }),
   'PROJECT_GET_DONE': (state, action) => ({ ...state, data: action.payload.data, loaded: true }),
@@ -26,6 +37,8 @@ const formReducer = createReducer(initialStateTree.form, {
   'SPRINT_GET_INIT': (state, action) => ({ ...state, data: {}, loaded: false }),
   'SPRINT_GET_DONE': (state, action) => ({ ...state, data: action.payload.data, loaded: true }),
   'SPRINT_EDIT_DONE': (state, action) => ({ ...state, data: {}, loaded: false }),
+  'TASK_MEMBERS_GET_DONE': (state, action) => ({ ...state, members: action.payload.members, membersLoaded: true }),
+  'TASK_MEMBERS_GET_INIT': (state, action) => ({ ...state, members: [], membersLoaded: false }),
 });
 
 const projectReducer = createReducer(initialStateTree.project, {
@@ -68,6 +81,7 @@ const userReducer = createReducer(initialStateTree.user, {
 export const reducers = {
   user: userReducer,
   project: projectReducer,
-  form: formReducer
+  form: formReducer,
+  sprint: sprintReducer
 };
 

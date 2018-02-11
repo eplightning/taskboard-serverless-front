@@ -14,6 +14,8 @@ import ProjectAdd from '../containers/ProjectAdd';
 import ProjectEdit from '../containers/ProjectEdit';
 import SprintAdd from '../containers/SprintAdd';
 import SprintEdit from '../containers/SprintEdit';
+import SwimlaneAdd from '../containers/SwimlaneAdd';
+import TaskAdd from '../containers/TaskAdd';
 
 const AuthProtected = () => {
   return <RequireAuth>
@@ -24,9 +26,11 @@ const AuthProtected = () => {
       <Route exact path="/projects/edit/:project" component={ProjectEdit}/>
       <Route exact path="/sprints/add/:project" component={SprintAdd}/>
       <Route exact path="/sprints/edit/:project/:sprint" component={SprintEdit}/>
-      <Route exact path="/sprints/:id/board" component={SprintContainer}/>
-      <Route exact path="/sprints/:id/swimlanes/add" component={SwimlaneForm}/>
-      <Route exact path="/sprints/:id/tasks/add/:swimlane" component={TaskForm}/>
+      <Route exact path="/sprints/board/:project/:sprint" component={SprintContainer}/>
+      <Route exact path="/swimlanes/add/:project/:sprint" component={SwimlaneAdd}/>
+      <Route exact path="/swimlanes/edit/:project/:sprint/:swimlane" component={SwimlaneForm}/>
+      <Route exact path="/tasks/add/:project/:sprint/:swimlane" component={TaskAdd}/>
+      <Route exact path="/tasks/edit/:project/:sprint/:task" component={TaskForm}/>
     </Switch>
   </RequireAuth>;
 };

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import '../styles/Home.scss';
-import { TextField, withStyles, Toolbar, Button } from 'material-ui';
-import { Link } from 'react-router-dom';
+import { Button, Toolbar, withStyles } from 'material-ui';
 import Formsy from 'formsy-react';
 import TextFormInput from './input/TextFormInput';
-import UserSelectInput from './input/UserSelectInput';
 import SelectInput from './input/SelectInput';
 import AssignedUserInput from './input/AssignedUserInput'
 
@@ -34,42 +32,32 @@ class TaskForm extends Component {
 
   state = {
     valid: true,
-    name: 'Cat in the Hat',
-    age: '',
-    multiline: 'Controlled',
-    currency: 'EUR',
     defaultPoints: ''
-  };
-
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
   };
 
   handleValid = () => {
     this.setState({ valid: true });
-  }
+  };
 
   handleInvalid = () => {
     this.setState({ valid: false });
-  }
+  };
 
   handlePointsBlur = () => {
     const model = this.refs.form.getModel();
 
-    if (model.points == '' || model.points == null) {
+    if (model.points === '' || model.points == null) {
       this.setState({ defaultPoints: model.planned_points });
     }
-  }
+  };
 
   render() {
-    const { classes } = this.props;
+    const { classes, submit, formValues, members } = this.props;
     const { valid, defaultPoints } = this.state;
 
-    return <Formsy onValid={this.handleValid} onInvalid={this.handleInvalid} ref="form">
+    return <Formsy onValidSubmit={submit} onValid={this.handleValid} onInvalid={this.handleInvalid} ref="form">
       <Toolbar className={classes.toolbar}>
-        <Button disabled={!valid} raised color="primary" component={Link} to="/sprints/add">
+        <Button disabled={!valid} variant="raised" color="primary" type="submit">
           Save
         </Button>
       </Toolbar>
@@ -77,7 +65,7 @@ class TaskForm extends Component {
         <SelectInput
           label="State"
           name="state"
-          value="new">
+          value={formValues.state}>
           <option value="new">New</option>
           <option value="in_progress">In progress</option>
           <option value="done">Done</option>
@@ -85,14 +73,14 @@ class TaskForm extends Component {
         </SelectInput>
         <TextFormInput
           label="Task title"
-          name="title"
-          value="Start"
+          name="name"
+          value={formValues.name}
           required
         />
         <TextFormInput
           label="Description"
           name="description"
-          value="Start"
+          value={formValues.description}
           multiline
         />
         <div className={classes.inputDivFull}>
@@ -101,7 +89,7 @@ class TaskForm extends Component {
             label="Planned points"
             name="planned_points"
             fullWidth={false}
-            value=""
+            value={formValues.planned_points}
             onBlur={this.handlePointsBlur}
           />
         </div>
@@ -111,14 +99,14 @@ class TaskForm extends Component {
             label="Points"
             name="points"
             fullWidth={false}
-            value={defaultPoints}
+            value={defaultPoints || formValues.points}
           />
         </div>
         <AssignedUserInput
           label="Assigned members"
-          name="assigned"
-          options={['wrexdot@gmail.com', 'test@gmail.com', 'inny@gmail.com']}
-          value={['wrexdot@gmail.com', 'test@gmail.com']}
+          name="assigned_members"
+          options={members}
+          value={formValues.assigned_members}
         />
       </div>
     </Formsy>;

@@ -6,9 +6,16 @@ import { userSessionSet } from './actions/user';
 import { Observable } from 'rxjs';
 import { api } from '../utils/api';
 import {
-  addProjectDone, editProjectDone, editSprintDone, getProjectDone, getSprintDone, loadProjects, loadProjectsDone,
+  editProjectDone,
+  editSprintDone,
+  getProjectDone,
+  getSprintDone,
+  loadProjects,
+  loadProjectsDone,
   loadSprintsDone
 } from './actions/project';
+import { loadBoardDone } from './actions/board';
+import { getMembersDone } from './actions/task';
 
 const loadProjectsEpic = (action$, store) => {
   return action$
@@ -69,7 +76,7 @@ const addSprintEpic = (action$, store) => {
 const getSprintEpic = (action$, store) => {
   return action$
     .ofType('SPRINT_GET_INIT')
-    .switchMap((a) => api.get('projects/' + a.payload.project +'/sprints/' + a.payload.id))
+    .switchMap((a) => api.get('projects/' + a.payload.project + '/sprints/' + a.payload.id))
     .map(response => getSprintDone(response))
     .catch((err) => Observable.of(getSprintDone(null, err)));
 };
@@ -90,11 +97,44 @@ const removeSprintEpic = (action$, store) => {
     .catch((err) => Observable.empty());
 };
 
+const addSwimlaneEpic = (action$, store) => {
+  return action$
+    .ofType('SWIMLANE_ADD_INIT')
+    .switchMap((a) => api.post('projects/' + a.payload.project + '/sprints/' + a.payload.sprint + '/swimlanes', a.payload.swimlane))
+    .map(sl => push('/sprints/board/' + sl.project_id + '/' + sl.sprint_id))
+    .catch((err) => Observable.empty())
+};
+
+const loadBoardEpic = (action$, store) => {
+  return action$
+    .ofType('BOARD_LOAD_INIT')
+    .switchMap((a) => api.get('projects/' + a.payload.project + '/sprints/' + a.payload.sprint + '/board'))
+    .map(response => loadBoardDone(response.project_id, response.id, response))
+    // .catch((err) => Observable.of(loadBoardDone(null, err)));
+    .catch((err) => Observable.empty());
+};
+
+const getMembersEpic = (action$, store) => {
+  return action$
+    .ofType('TASK_MEMBERS_GET_INIT')
+    .switchMap((a) => api.get('projects/' + a.payload.id))
+    .map(response => getMembersDone([...response.members, response.owner]))
+    .catch((err) => Observable.of(getMembersDone(null, err)));
+};
+
+const addTaskEpic = (action$, store) => {
+  return action$
+    .ofType('TASK_ADD_INIT')
+    .switchMap((a) => api.post('projects/' + a.payload.project + '/tasks', a.payload.task))
+    .map(sl => push('/sprints/board/' + sl.project_id + '/' + sl.sprint_id))
+    .catch((err) => Observable.empty())
+};
+
 const authCallbackEpic = (action$, store) => {
   return action$
     .filter(a =>
       a.type === LOCATION_CHANGE && a.payload.pathname === '/auth_callback'
-        && /access_token|id_token|error/.test(a.payload.hash)
+      && /access_token|id_token|error/.test(a.payload.hash)
     )
     .mergeMap(() => {
       return auth.handleAuthentication();
@@ -140,5 +180,15 @@ export const epics = [
   addSprintEpic,
   getSprintEpic,
   editSprintEpic,
-  removeSprintEpic
+  removeSprintEpic,
+
+  // board
+  loadBoardEpic,
+
+  // swimlane actions
+  addSwimlaneEpic,
+
+  // task actions
+  getMembersEpic,
+  addTaskEpic
 ];

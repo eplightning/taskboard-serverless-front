@@ -28,55 +28,45 @@ const styles = theme => ({
 class SwimlaneForm extends Component {
 
   state = {
-    valid: true,
-    name: 'Cat in the Hat',
-    age: '',
-    multiline: 'Controlled',
-    currency: 'EUR',
-  };
-
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
+    valid: true
   };
 
   handleValid = () => {
     this.setState({ valid: true });
-  }
+  };
 
   handleInvalid = () => {
     this.setState({ valid: false });
-  }
+  };
 
   render() {
-    const { classes } = this.props;
+    const { classes, submit, formValues } = this.props;
     const { valid } = this.state;
 
-    return <Formsy onValid={this.handleValid} onInvalid={this.handleInvalid}>
+    return <Formsy onValidSubmit={submit} onValid={this.handleValid} onInvalid={this.handleInvalid}>
       <Toolbar className={classes.toolbar}>
-        <Button disabled={!valid} raised color="primary" component={Link} to="/sprints/add">
+        <Button disabled={!valid} variant="raised" color="primary" type="submit">
           Save
         </Button>
       </Toolbar>
       <div className={classes.container}>
         <TextFormInput
           label="Title"
-          name="title"
-          value="Start"
+          name="name"
+          value={formValues.name}
           required
         />
         <TextFormInput
           label="Description"
           name="description"
-          value="Start"
+          value={formValues.description}
           multiline
         />
         <TextFormInput
           type="number"
           label="Story points"
-          name="story_points"
-          value=""
+          name="points"
+          value={formValues.points}
         />
       </div>
     </Formsy>;

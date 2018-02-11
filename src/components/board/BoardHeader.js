@@ -25,25 +25,25 @@ const styles = theme => ({
 class BoardHeader extends Component {
 
   render() {
-    const { classes } = this.props;
+    const { classes, totals } = this.props;
 
     return <Card className={classes.headerCard}>
       <Grid container spacing={8}>
         <Grid item xs={3}>
           <span>New</span>
-          <span className={classes.total}>24</span>
+          <span className={classes.total}>{totals.new}</span>
         </Grid>
         <Grid item xs={3}>
           <span>In progress</span>
-          <span className={classes.total}>24</span>
+          <span className={classes.total}>{totals['in-progress']}</span>
         </Grid>
         <Grid item xs={3}>
           <span>Completed</span>
-          <span className={classes.total}>24</span>
+          <span className={classes.total}>{totals.done}</span>
         </Grid>
         <Grid item xs={3}>
           <span>Blocked</span>
-          <span className={classes.total}>24</span>
+          <span className={classes.total}>{totals.blocked}</span>
         </Grid>
       </Grid>
     </Card>;

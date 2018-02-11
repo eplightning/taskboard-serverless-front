@@ -19,7 +19,7 @@ class SelectInput extends Component {
         fullWidth
         value={getValue() || ''}
         onChange={this.changeValue}
-        margin="normal"
+        margin="dense"
         name={name}
       >
         {children}

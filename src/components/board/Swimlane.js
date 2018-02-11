@@ -5,21 +5,11 @@ import Typography from 'material-ui/Typography';
 import ExpansionPanel, { ExpansionPanelDetails, ExpansionPanelSummary, } from 'material-ui/ExpansionPanel';
 
 import { withStyles } from 'material-ui/styles';
-import Card, { CardActions, CardContent } from 'material-ui/Card';
-import TextField from 'material-ui/TextField';
-import IconButton from 'material-ui/IconButton';
 import Grid from 'material-ui/Grid';
 
 import Icon from 'material-ui/Icon';
-import Avatar from 'material-ui/Avatar';
 
-import {
-  Badge, Button, CardHeader, Dialog, DialogActions, DialogTitle, Divider, ExpansionPanelActions, Menu, MenuItem,
-  Tooltip
-} from 'material-ui';
-import Task from './Task';
-import auth from '../../utils/auth';
-import SwimlaneColumn from './SwimlaneColumn';
+import { Button, Dialog, DialogActions, DialogTitle, Divider, ExpansionPanelActions } from 'material-ui';
 import { Link } from 'react-router-dom';
 
 const styles = theme => ({
@@ -45,10 +35,6 @@ class Swimlane extends Component {
     removeDialog: false
   };
 
-  componentWillMount() {
-    // auth.login();
-  }
-
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
@@ -67,7 +53,7 @@ class Swimlane extends Component {
 
   render() {
     const { removeDialog } = this.state;
-    const { classes } = this.props;
+    const { classes, children, swimlane } = this.props;
     const { anchorEl } = this.state;
 
     return (
@@ -77,7 +63,7 @@ class Swimlane extends Component {
           disableEscapeKeyDown
           maxWidth="xs"
           open={removeDialog}>
-          <DialogTitle>Are you sure you want to remove swimlane X?</DialogTitle>
+          <DialogTitle>Are you sure you want to remove swimlane {swimlane.name}?</DialogTitle>
           <DialogActions>
             <Button onClick={() => this.handleRemovalClick(false)} color="primary">
               Cancel
@@ -89,30 +75,19 @@ class Swimlane extends Component {
         </Dialog>
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
-            <Typography>User Story kurwa magia</Typography>
+            <Typography>{swimlane.name}</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Grid container spacing={8}>
-              <SwimlaneColumn>
-                <Task></Task>
-                <Task></Task>
-              </SwimlaneColumn>
-              <SwimlaneColumn>
-                <Task></Task>
-              </SwimlaneColumn>
-              <SwimlaneColumn>
-                <Task></Task>
-              </SwimlaneColumn>
-              <SwimlaneColumn>
-                <Task></Task>
-              </SwimlaneColumn>
+              {children}
             </Grid>
           </ExpansionPanelDetails>
-          <Divider />
+          <Divider/>
           <ExpansionPanelActions>
-            <Button dense>Edit</Button>
-            <Button dense color="accent" onClick={this.confirmRemoval}>Remove</Button>
-            <Button dense color="primary" component={Link} to="/sprints/15/tasks/add/aaaaa-aa-aa">
+            <Button>Edit</Button>
+            <Button color="inherit" onClick={this.confirmRemoval}>Remove</Button>
+            <Button color="primary" component={Link}
+                    to={'/tasks/add/' + swimlane.project_id + '/' + swimlane.sprint_id + '/' + swimlane.id}>
               Add new task
             </Button>
           </ExpansionPanelActions>
