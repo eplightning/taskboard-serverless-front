@@ -5,11 +5,14 @@ import { userSessionSet } from './actions/user';
 
 import { Observable } from 'rxjs';
 import { api } from '../utils/api';
-import { loadProjectsDone, loadSprintsDone } from './actions/project';
+import {
+  addProjectDone, editProjectDone, getProjectDone, loadProjects, loadProjectsDone,
+  loadSprintsDone
+} from './actions/project';
 
 const loadProjectsEpic = (action$, store) => {
   return action$
-    .filter(a => a.type === 'PROJECT_LOAD_INIT')
+    .ofType('PROJECT_LOAD_INIT')
     .switchMap(() => api.get('projects'))
     .map(projects => loadProjectsDone(projects))
     .catch((err) => Observable.of(loadProjectsDone(null, err)));
@@ -17,10 +20,42 @@ const loadProjectsEpic = (action$, store) => {
 
 const loadSprintsEpic = (action$, store) => {
   return action$
-    .filter(a => a.type === 'SPRINT_LOAD_INIT')
+    .ofType('SPRINT_LOAD_INIT')
     .switchMap((a) => api.get('projects/' + a.payload.project + '/sprints'))
     .map(sprints => loadSprintsDone(sprints))
     .catch((err) => Observable.of(loadSprintsDone(null, err)));
+};
+
+const addProjectEpic = (action$, store) => {
+  return action$
+    .ofType('PROJECT_ADD_INIT')
+    .switchMap((a) => api.post('projects', a.payload.project))
+    .map(project => push('/projects/view/' + project.id))
+    .catch((err) => Observable.empty())
+};
+
+const getProjectEpic = (action$, store) => {
+  return action$
+    .ofType('PROJECT_GET_INIT')
+    .switchMap((a) => api.get('projects/' + a.payload.id))
+    .map(response => getProjectDone(response))
+    .catch((err) => Observable.of(getProjectDone(null, err)));
+};
+
+const editProjectEpic = (action$, store) => {
+  return action$
+    .ofType('PROJECT_EDIT_INIT')
+    .switchMap((a) => api.put('projects/' + a.payload.id, a.payload.data))
+    .switchMap(project => Observable.of(push('/projects/view/' + project.id), editProjectDone(project)))
+    .catch((err) => Observable.of(editProjectDone(null, err)));
+};
+
+const removeProjectEpic = (action$, store) => {
+  return action$
+    .ofType('PROJECT_REMOVE_INIT')
+    .switchMap((a) => api.delete('projects/' + a.payload.id))
+    .switchMap(project => Observable.of(push('/projects'), loadProjects()))
+    .catch((err) => Observable.empty());
 };
 
 const authCallbackEpic = (action$, store) => {
@@ -55,8 +90,17 @@ const authTokenRefreshEpic = (action$, store) => {
 };
 
 export const epics = [
+  // auth
   authCallbackEpic,
   authTokenRefreshEpic,
+
+  // projects view
   loadProjectsEpic,
-  loadSprintsEpic
+  loadSprintsEpic,
+
+  // project actions
+  addProjectEpic,
+  getProjectEpic,
+  editProjectEpic,
+  removeProjectEpic
 ];

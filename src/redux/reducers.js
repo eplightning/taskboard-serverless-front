@@ -1,13 +1,14 @@
 import { createReducer } from './reducers/utils'
 
 const initialStateTree = {
-  global: {
-    test: 'test'
-  },
   project: {
     projects: [],
     sprints: [],
     projectsLoaded: false
+  },
+  form: {
+    data: {},
+    loaded: false
   },
   user: {
     signedIn: false,
@@ -18,15 +19,17 @@ const initialStateTree = {
   }
 };
 
+const formReducer = createReducer(initialStateTree.form, {
+  'PROJECT_GET_INIT': (state, action) => ({ ...state, data: {}, loaded: false }),
+  'PROJECT_GET_DONE': (state, action) => ({ ...state, data: action.payload.data, loaded: true }),
+  'PROJECT_EDIT_DONE': (state, action) => ({ ...state, data: {}, loaded: false }),
+});
+
 const projectReducer = createReducer(initialStateTree.project, {
   'PROJECT_LOAD_INIT': (state, action) => ({ ...state, projects: [], projectsLoaded: true }),
   'SPRINT_LOAD_INIT': (state, action) => ({ ...state, sprints: [] }),
   'PROJECT_LOAD_DONE': (state, action) => ({ ...state, projects: action.payload.projects }),
   'SPRINT_LOAD_DONE': (state, action) => ({ ...state, sprints: action.payload.sprints }),
-});
-
-const globalReducer = createReducer(initialStateTree.global, {
-  'TEST_ACTION': (state, action) => ({ ...state, test: action.payload.text })
 });
 
 const userReducer = createReducer(initialStateTree.user, {
@@ -60,8 +63,8 @@ const userReducer = createReducer(initialStateTree.user, {
 });
 
 export const reducers = {
-  global: globalReducer,
   user: userReducer,
-  project: projectReducer
+  project: projectReducer,
+  form: formReducer
 };
 

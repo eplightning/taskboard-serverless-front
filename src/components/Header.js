@@ -73,7 +73,7 @@ class Header extends Component {
     const sprints = this.props.sprints || [];
 
     const projectsList = projects.map(a =>
-      <ListItem button component={Link} to={'/projects/view/' + a.id}>
+      <ListItem button component={Link} to={'/projects/view/' + a.id} key={a.id}>
         <ListItemIcon>
           <Avatar>{a.name.charAt(0)}</Avatar>
         </ListItemIcon>
@@ -82,7 +82,7 @@ class Header extends Component {
     );
 
     const sprintsList = sprints.map(a =>
-      <ListItem button component={Link} to={'/sprints/board/' + activeProject + '/' + a.id}>
+      <ListItem button component={Link} to={'/sprints/board/' + activeProject + '/' + a.id} key={a.id}>
         <ListItemText primary={a.name} />
       </ListItem>
     );
@@ -139,7 +139,7 @@ class Header extends Component {
               aria-owns={menuOpen ? 'menu-appbar' : null}
               aria-haspopup="true"
               onClick={this.handleMenu}
-              color="contrast"
+              color="inherit"
             >
               <Avatar src={gravatar.url(email)}></Avatar>
             </IconButton>

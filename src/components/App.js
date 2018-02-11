@@ -13,13 +13,16 @@ import ProjectForm from './ProjectForm';
 import SwimlaneForm from './SwimlaneForm';
 import TaskForm from './TaskForm';
 import ProjectsContainer from '../containers/ProjectsContainer';
+import ProjectAdd from '../containers/ProjectAdd';
+import ProjectEdit from '../containers/ProjectEdit';
 
 const AuthProtected = () => {
   return <RequireAuth>
     <Switch>
       <Route exact path="/projects" component={ProjectsContainer}/>
       <Route exact path="/projects/view/:project" component={ProjectsContainer}/>
-      <Route exact path="/projects/add" component={ProjectForm}/>
+      <Route exact path="/projects/add" component={ProjectAdd}/>
+      <Route exact path="/projects/edit/:project" component={ProjectEdit}/>
       <Route exact path="/sprints/add" component={SprintForm}/>
       <Route exact path="/sprints/:id/board" component={SprintContainer}/>
       <Route exact path="/sprints/:id/swimlanes/add" component={SwimlaneForm}/>

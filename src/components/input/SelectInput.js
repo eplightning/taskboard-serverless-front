@@ -9,7 +9,7 @@ class SelectInput extends Component {
   }
 
   render() {
-    const { children, label, getValue, getErrorMessage, isValid, value, ...other } = this.props;
+    const { children, label, name, getValue, isValid } = this.props;
 
     return <FormControl>
       <InputLabel>{label}</InputLabel>
@@ -20,7 +20,7 @@ class SelectInput extends Component {
         value={getValue() || ''}
         onChange={this.changeValue}
         margin="normal"
-        {...other}
+        name={name}
       >
         {children}
       </Select>

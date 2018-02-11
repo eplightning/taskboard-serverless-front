@@ -9,15 +9,21 @@ class TextFormInput extends Component {
   }
 
   render() {
-    const { getValue, getErrorMessage, isValid, value, ...other } = this.props;
+    const { getValue, isValid } = this.props;
+    const { label, name, required, type, multiline, fullWidth, onBlur } = this.props;
 
     return <TextField
       error={!isValid()}
-      fullWidth
       value={getValue() || ''}
       onChange={this.changeValue}
       margin="normal"
-      {...other}
+      label={label}
+      name={name}
+      required={required}
+      type={type}
+      multiline={multiline}
+      fullWidth={fullWidth == null ? true : fullWidth}
+      onBlur={onBlur}
     />;
   }
 }

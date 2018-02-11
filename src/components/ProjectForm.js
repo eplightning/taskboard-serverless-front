@@ -43,19 +43,19 @@ class ProjectForm extends Component {
 
   handleValid = () => {
     this.setState({ valid: true });
-  }
+  };
 
   handleInvalid = () => {
     this.setState({ valid: false });
-  }
+  };
 
   render() {
-    const { classes } = this.props;
+    const { classes, submit, formValues } = this.props;
     const { valid } = this.state;
 
-    return <Formsy onValid={this.handleValid} onInvalid={this.handleInvalid}>
+    return <Formsy onValidSubmit={submit} onValid={this.handleValid} onInvalid={this.handleInvalid}>
       <Toolbar className={classes.toolbar}>
-        <Button disabled={!valid} raised color="primary" component={Link} to="/projects/add">
+        <Button disabled={!valid} variant="raised" color="primary" type="submit">
           Save
         </Button>
       </Toolbar>
@@ -63,13 +63,13 @@ class ProjectForm extends Component {
         <TextFormInput
           label="Project name"
           name="name"
-          value="Start"
+          value={formValues.name}
           required
         />
         <UserSelectInput
           label="Members"
           name="members"
-          value={['wrexdot@gmail.com', 'test@gmail.com']}
+          value={formValues.members}
         />
       </div>
     </Formsy>;

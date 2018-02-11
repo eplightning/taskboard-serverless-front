@@ -71,7 +71,7 @@ class UserSelectInput extends Component {
               />
           </Grid>
           <Grid item xs={6}>
-            <Button fab onClick={this.addMail}>Add</Button>
+            <Button variant="fab" onClick={this.addMail}>Add</Button>
           </Grid>
         </Grid>
       </FormControl>

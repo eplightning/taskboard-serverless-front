@@ -5,12 +5,10 @@ class AssignedUserInput extends Component {
 
   changeValue = (event) => {
     this.props.setValue(event.target.value);
-  }
+  };
 
   render() {
-    const { options, children, label, getValue,
-      getErrorMessage, isValid, value, theme, ...other
-    } = this.props;
+    const { options, name, label, getValue, isValid } = this.props;
 
     const formValue = getValue() || [];
 
@@ -23,7 +21,7 @@ class AssignedUserInput extends Component {
         value={formValue}
         onChange={this.changeValue}
         margin="normal"
-        {...other}
+        name={name}
       >
         {options.map(a => {
           return <MenuItem key={a} value={a} style={{

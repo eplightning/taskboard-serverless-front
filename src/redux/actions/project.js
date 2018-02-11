@@ -1,3 +1,82 @@
+export function addProject(project) {
+  return {
+    type: 'PROJECT_ADD_INIT',
+    payload: {
+      project: project
+    }
+  }
+}
+
+export function addProjectDone(project, error) {
+  if (error != null) {
+    return {
+      type: 'PROJECT_ADD_DONE',
+      payload: error,
+      error: true
+    }
+  }
+
+  return {
+    type: 'PROJECT_ADD_DONE',
+    payload: {
+      project: project
+    }
+  }
+}
+
+export function editProject(id, data) {
+  return {
+    type: 'PROJECT_EDIT_INIT',
+    payload: {
+      id: id,
+      data: data
+    }
+  }
+}
+
+export function editProjectDone(data, error) {
+  if (error != null) {
+    return {
+      type: 'PROJECT_EDIT_DONE',
+      payload: error,
+      error: true
+    }
+  }
+
+  return {
+    type: 'PROJECT_EDIT_DONE',
+    payload: {
+      data: data
+    }
+  }
+}
+
+export function getProject(id) {
+  return {
+    type: 'PROJECT_GET_INIT',
+    payload: {
+      id: id
+    }
+  }
+}
+
+export function getProjectDone(project, error) {
+  if (error != null) {
+    return {
+      type: 'PROJECT_GET_DONE',
+      payload: error,
+      error: true
+    }
+  }
+
+  return {
+    type: 'PROJECT_GET_DONE',
+    payload: {
+      data: project
+    }
+  }
+}
+
 export function loadProjects() {
   return {
     type: 'PROJECT_LOAD_INIT'
