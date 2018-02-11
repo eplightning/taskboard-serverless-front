@@ -6,10 +6,6 @@ import { connect } from 'react-redux';
 
 class RequireAuthView extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     if (!this.props.signedIn) {
       auth.login();

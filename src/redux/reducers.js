@@ -23,6 +23,9 @@ const formReducer = createReducer(initialStateTree.form, {
   'PROJECT_GET_INIT': (state, action) => ({ ...state, data: {}, loaded: false }),
   'PROJECT_GET_DONE': (state, action) => ({ ...state, data: action.payload.data, loaded: true }),
   'PROJECT_EDIT_DONE': (state, action) => ({ ...state, data: {}, loaded: false }),
+  'SPRINT_GET_INIT': (state, action) => ({ ...state, data: {}, loaded: false }),
+  'SPRINT_GET_DONE': (state, action) => ({ ...state, data: action.payload.data, loaded: true }),
+  'SPRINT_EDIT_DONE': (state, action) => ({ ...state, data: {}, loaded: false }),
 });
 
 const projectReducer = createReducer(initialStateTree.project, {

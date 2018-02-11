@@ -28,17 +28,7 @@ const styles = theme => ({
 class ProjectForm extends Component {
 
   state = {
-    valid: true,
-    name: 'Cat in the Hat',
-    age: '',
-    multiline: 'Controlled',
-    currency: 'EUR',
-  };
-
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
+    valid: true
   };
 
   handleValid = () => {

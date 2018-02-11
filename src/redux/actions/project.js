@@ -144,3 +144,86 @@ export function removeSprint(project, id) {
     }
   }
 }
+
+export function addSprint(project, sprint) {
+  return {
+    type: 'SPRINT_ADD_INIT',
+    payload: {
+      project: project,
+      sprint: sprint
+    }
+  }
+}
+
+export function addSprintDone(project, sprint, error) {
+  if (error != null) {
+    return {
+      type: 'SPRINT_ADD_DONE',
+      payload: error,
+      error: true
+    }
+  }
+
+  return {
+    type: 'SPRINT_ADD_DONE',
+    payload: {
+      project: project,
+      sprint: sprint
+    }
+  }
+}
+
+export function editSprint(project, id, data) {
+  return {
+    type: 'SPRINT_EDIT_INIT',
+    payload: {
+      project: project,
+      id: id,
+      data: data
+    }
+  }
+}
+
+export function editSprintDone(data, error) {
+  if (error != null) {
+    return {
+      type: 'SPRINT_EDIT_DONE',
+      payload: error,
+      error: true
+    }
+  }
+
+  return {
+    type: 'SPRINT_EDIT_DONE',
+    payload: {
+      data: data
+    }
+  }
+}
+
+export function getSprint(project, id) {
+  return {
+    type: 'SPRINT_GET_INIT',
+    payload: {
+      project: project,
+      id: id
+    }
+  }
+}
+
+export function getSprintDone(project, error) {
+  if (error != null) {
+    return {
+      type: 'SPRINT_GET_DONE',
+      payload: error,
+      error: true
+    }
+  }
+
+  return {
+    type: 'PROJECT_GET_DONE',
+    payload: {
+      data: project
+    }
+  }
+}

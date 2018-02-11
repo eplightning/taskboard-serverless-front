@@ -6,7 +6,7 @@ import { userSessionSet } from './actions/user';
 import { Observable } from 'rxjs';
 import { api } from '../utils/api';
 import {
-  addProjectDone, editProjectDone, getProjectDone, loadProjects, loadProjectsDone,
+  addProjectDone, editProjectDone, editSprintDone, getProjectDone, getSprintDone, loadProjects, loadProjectsDone,
   loadSprintsDone
 } from './actions/project';
 
@@ -58,6 +58,38 @@ const removeProjectEpic = (action$, store) => {
     .catch((err) => Observable.empty());
 };
 
+const addSprintEpic = (action$, store) => {
+  return action$
+    .ofType('SPRINT_ADD_INIT')
+    .switchMap((a) => api.post('projects/' + a.payload.project + '/sprints', a.payload.sprint))
+    .map(sprint => push('/projects/view/' + sprint.project_id))
+    .catch((err) => Observable.empty())
+};
+
+const getSprintEpic = (action$, store) => {
+  return action$
+    .ofType('SPRINT_GET_INIT')
+    .switchMap((a) => api.get('projects/' + a.payload.project +'/sprints/' + a.payload.id))
+    .map(response => getSprintDone(response))
+    .catch((err) => Observable.of(getSprintDone(null, err)));
+};
+
+const editSprintEpic = (action$, store) => {
+  return action$
+    .ofType('SPRINT_EDIT_INIT')
+    .switchMap((a) => api.put('projects/' + a.payload.project + '/sprints/' + a.payload.id, a.payload.data))
+    .switchMap(sprint => Observable.of(push('/projects/view/' + sprint.project_id), editSprintDone(sprint)))
+    .catch((err) => Observable.of(editSprintDone(null, err)));
+};
+
+const removeSprintEpic = (action$, store) => {
+  return action$
+    .ofType('SPRINT_REMOVE_INIT')
+    .switchMap((a) => api.delete('projects/' + a.payload.project + '/sprints/' + a.payload.id))
+    .switchMap(sprint => Observable.of(push('/projects')))
+    .catch((err) => Observable.empty());
+};
+
 const authCallbackEpic = (action$, store) => {
   return action$
     .filter(a =>
@@ -102,5 +134,11 @@ export const epics = [
   addProjectEpic,
   getProjectEpic,
   editProjectEpic,
-  removeProjectEpic
+  removeProjectEpic,
+
+  // sprint actions
+  addSprintEpic,
+  getSprintEpic,
+  editSprintEpic,
+  removeSprintEpic
 ];

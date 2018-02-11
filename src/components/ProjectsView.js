@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import {
   Avatar,
   Button,
-  Card, Dialog, DialogActions, DialogTitle,
+  Card,
+  Dialog,
+  DialogActions,
+  DialogTitle,
   Grid,
   Icon,
   IconButton,
@@ -76,11 +79,12 @@ class ProjectsView extends Component {
     const { classes, activeProject, projects, sprints } = this.props;
 
     const projectsList = projects.map(a =>
-      <ListItem button className={activeProject === a.id ? classes.selected : null} component={Link} to={'/projects/view/' + a.id}>
+      <ListItem button className={activeProject === a.id ? classes.selected : null} component={Link}
+                to={'/projects/view/' + a.id} key={a.id}>
         <ListItemIcon className={classes.icon}>
           <Avatar>{a.name.charAt(0)}</Avatar>
         </ListItemIcon>
-        <ListItemText primary={a.name} className={classes.primary} />
+        <ListItemText primary={a.name} className={classes.primary}/>
         <ListItemSecondaryAction className={activeProject === a.id ? classes.selected : null}>
           <IconButton aria-label="Edit" onClick={this.handleClick(a.id)} className={classes.icon}>
             <Icon>more_vert</Icon>
@@ -90,7 +94,7 @@ class ProjectsView extends Component {
     );
 
     const sprintsList = sprints.map(a =>
-      <ListItem button component={Link} to={'/sprints/board/' + activeProject + '/' + a.id}>
+      <ListItem button component={Link} to={'/sprints/board/' + activeProject + '/' + a.id} key={a.id}>
         <ListItemText primary={a.name} secondary={a.start_date + ' - ' + a.end_date}/>
         <ListItemSecondaryAction>
           <IconButton aria-label="Edit" onClick={this.handleClick(activeProject, a.id)}>
@@ -148,7 +152,7 @@ class ProjectsView extends Component {
           <Grid item sm={6}>
             <Card>
               <Toolbar className={classes.toolbar}>
-                <Button variant="raised" color="primary" component={Link} to="/sprints/add">
+                <Button variant="raised" color="primary" component={Link} to={'/sprints/add/' + activeProject}>
                   Add sprint
                 </Button>
               </Toolbar>

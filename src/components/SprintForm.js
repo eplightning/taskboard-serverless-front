@@ -28,34 +28,24 @@ const styles = theme => ({
 class SprintForm extends Component {
 
   state = {
-    valid: true,
-    name: 'Cat in the Hat',
-    age: '',
-    multiline: 'Controlled',
-    currency: 'EUR',
-  };
-
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
+    valid: true
   };
 
   handleValid = () => {
     this.setState({ valid: true });
-  }
+  };
 
   handleInvalid = () => {
     this.setState({ valid: false });
-  }
+  };
 
   render() {
-    const { classes } = this.props;
+    const { classes, submit, formValues } = this.props;
     const { valid } = this.state;
 
-    return <Formsy onValid={this.handleValid} onInvalid={this.handleInvalid}>
+    return <Formsy onValidSubmit={submit} onValid={this.handleValid} onInvalid={this.handleInvalid}>
       <Toolbar className={classes.toolbar}>
-        <Button disabled={!valid} raised color="primary" component={Link} to="/sprints/add">
+        <Button disabled={!valid} variant="raised" color="primary" type="submit">
           Save
         </Button>
       </Toolbar>
@@ -63,21 +53,21 @@ class SprintForm extends Component {
         <TextFormInput
           label="Sprint name"
           name="name"
-          value="Start"
+          value={formValues.name}
           required
         />
         <TextFormInput
           type="date"
           label="Start date"
           name="start_date"
-          value="2017-01-01"
+          value={formValues.start_date}
           required
         />
         <TextFormInput
           type="date"
           label="End date"
           name="end_date"
-          value="2017-01-01"
+          value={formValues.end_date}
           required
         />
       </div>
