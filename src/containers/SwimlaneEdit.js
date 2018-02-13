@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SwimlaneForm from '../components/SwimlaneForm';
-import { editSwimlane } from '../redux/actions/swimlane';
+import { editSwimlane, getSwimlane } from '../redux/actions/swimlane';
 import Loader from '../components/Loader';
 
 class SwimlaneEdit extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.props.getSwimlane(
+      props.match.params.project,
+      props.match.params.sprint,
+      props.match.params.swimlane
+    );
+  }
 
   submit = model => {
     const points = model.points != null ? parseInt(model.points, 10) : null;
@@ -38,4 +48,4 @@ class SwimlaneEdit extends Component {
 export default connect(state => ({
   loaded: state.form.loaded,
   data: state.form.data
-}), { editSwimlane })(SwimlaneEdit);
+}), { editSwimlane, getSwimlane })(SwimlaneEdit);

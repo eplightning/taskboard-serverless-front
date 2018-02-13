@@ -78,7 +78,9 @@ class Swimlane extends Component {
           </ExpansionPanelDetails>
           <Divider/>
           <ExpansionPanelActions>
-            <Button>Edit</Button>
+            <Button color="inherit" component={Link} to={
+              '/swimlanes/edit/' + swimlane.project_id + '/' + swimlane.sprint_id + '/' + swimlane.id
+            }>Edit</Button>
             <Button color="inherit" onClick={this.confirmRemoval}>Remove</Button>
             <Button color="primary" component={Link}
                     to={'/tasks/add/' + swimlane.project_id + '/' + swimlane.sprint_id + '/' + swimlane.id}>

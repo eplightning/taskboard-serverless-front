@@ -54,7 +54,7 @@ class Header extends Component {
 
   logout = () => {
     this.setState({ anchorEl: null });
-    this.props.logoutUser();
+    this.props.userLogout();
   };
 
   handleDrawerOpen = () => {
@@ -63,6 +63,10 @@ class Header extends Component {
 
   handlerDrawerClose = () => {
     this.setState({ drawerOpen: false });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
   };
 
   render() {

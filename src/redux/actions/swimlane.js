@@ -20,12 +20,12 @@ export function removeSwimlane(project, sprint, id) {
   }
 }
 
-export function editSwimlane(project, task, id, data) {
+export function editSwimlane(project, sprint, id, data) {
   return {
     type: 'SWIMLANE_EDIT_INIT',
     payload: {
       project: project,
-      task: task,
+      sprint: sprint,
       id: id,
       data: data
     }
