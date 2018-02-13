@@ -4,7 +4,7 @@ import auth from '../utils/auth';
 import { userSessionSet } from './actions/user';
 
 import { Observable } from 'rxjs';
-import { api } from '../utils/api';
+import api from '../utils/api';
 import {
   editProjectDone,
   editSprintDone,

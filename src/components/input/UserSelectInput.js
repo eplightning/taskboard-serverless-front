@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withFormsy } from 'formsy-react';
-import { Grid, TextField, Chip, FormLabel, FormControl, Button } from 'material-ui';
+import { Icon, Grid, TextField, Chip, FormLabel, FormControl, Button } from 'material-ui';
 
 import '../../styles/UserSelectInput.scss'
 
@@ -43,6 +43,7 @@ class UserSelectInput extends Component {
     if (event.keyCode === 13) {
       this.addMail();
       event.preventDefault();
+      event.stopPropagation();
     }
   }
 
@@ -67,11 +68,13 @@ class UserSelectInput extends Component {
               value={email}
               margin="normal"
               label="E-mail"
-              onKeyUp={this.keyPress}
+              onKeyDown={this.keyPress}
               />
           </Grid>
           <Grid item xs={6}>
-            <Button variant="fab" onClick={this.addMail}>Add</Button>
+            <Button color="primary" variant="fab" onClick={this.addMail}>
+              <Icon>add</Icon>
+            </Button>
           </Grid>
         </Grid>
       </FormControl>

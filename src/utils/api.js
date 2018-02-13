@@ -33,30 +33,28 @@ class TaskboardApi {
     };
   }
 
+  createAjaxObservable(options) {
+    return Observable.ajax(options).map(r => r.response);
+  }
+
   get(uri) {
-    return Observable
-      .ajax(this.requestOptions('GET', uri))
-      .map(a => a.response);
+    return this.createAjaxObservable(this.requestOptions('GET', uri));
   }
 
   delete(uri) {
-    return Observable
-      .ajax(this.requestOptions('DELETE', uri))
-      .map(a => a.response);
+    return this.createAjaxObservable(this.requestOptions('DELETE', uri));
   }
 
   post(uri, data) {
-    return Observable
-      .ajax(this.requestOptions('POST', uri, data))
-      .map(a => a.response);
+    return this.createAjaxObservable(this.requestOptions('POST', uri, data));
   }
 
   put(uri, data) {
-    return Observable
-      .ajax(this.requestOptions('PUT', uri, data))
-      .map(a => a.response);
+    return this.createAjaxObservable(this.requestOptions('PUT', uri, data));
   }
 
 }
 
-export const api = new TaskboardApi(apiBaseUrl);
+const api = new TaskboardApi(apiBaseUrl);
+
+export default api;

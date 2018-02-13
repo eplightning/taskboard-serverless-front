@@ -6,11 +6,9 @@ import Loader from '../components/Loader';
 
 class TaskEdit extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.props.getMembers(props.match.params.project);
-    this.props.getTask(props.match.params.project, props.match.params.task);
+  componentDidMount() {
+    this.props.getMembers(this.props.match.params.project);
+    this.props.getTask(this.props.match.params.project, this.props.match.params.task);
   }
 
   submit = model => {

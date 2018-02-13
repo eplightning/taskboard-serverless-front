@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Grid } from 'material-ui';
-import { withStyles } from 'material-ui/styles/index';
+import { withStyles } from 'material-ui/styles';
 
 const styles = theme => ({
   headerCard: {

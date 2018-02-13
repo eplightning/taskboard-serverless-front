@@ -25,7 +25,6 @@ const styles = {
     width: '100%',
   },
   appBar: {
-    position: 'sticky',
     top: 0,
     zIndex: 100,
   },
@@ -90,7 +89,7 @@ class Header extends Component {
     );
 
     const sideList = (
-      <div className={classes.list}>
+      <div className={classes.list} onClick={this.handlerDrawerClose}>
         <List subheader={<ListSubheader>Navigation</ListSubheader>}>
           <ListItem button component={Link} to="/">
             <ListItemIcon>
@@ -117,7 +116,7 @@ class Header extends Component {
       </div>
     );
 
-    return <AppBar className={classes.appBar}>
+    return <AppBar className={classes.appBar} position="sticky">
       <Toolbar>
         <Drawer open={drawerOpen} onClose={this.handlerDrawerClose}>
           <div

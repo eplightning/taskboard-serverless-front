@@ -15,7 +15,7 @@ import { ConnectedRouter, push } from 'react-router-redux';
 import { Route, Switch } from 'react-router-dom';
 import Loader from './components/Loader';
 import { userSessionSet } from './redux/actions/user';
-import { api } from './utils/api';
+import api from './utils/api';
 
 const history = createHistory();
 const store = createReduxStore(history);

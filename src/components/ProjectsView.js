@@ -137,7 +137,7 @@ class ProjectsView extends Component {
           <MenuItem onClick={this.handleRemove}>Remove</MenuItem>
         </Menu>
         <Grid container spacing={8}>
-          <Grid item sm={activeProject ? 6 : 12}>
+          <Grid item md={activeProject ? 6 : 12} xs={12}>
             <Card>
               <Toolbar className={classes.toolbar}>
                 <Button variant="raised" color="primary" component={Link} to="/projects/add">
@@ -150,7 +150,7 @@ class ProjectsView extends Component {
             </Card>
           </Grid>
           {activeProject &&
-          <Grid item sm={6}>
+          <Grid item md={6} xs={12}>
             <Card>
               <Toolbar className={classes.toolbar}>
                 <Button variant="raised" color="primary" component={Link} to={'/sprints/add/' + activeProject}>

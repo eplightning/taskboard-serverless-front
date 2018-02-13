@@ -7,10 +7,8 @@ import Loader from '../components/Loader';
 
 class ProjectEdit extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.props.getProject(props.match.params.project);
+  componentDidMount() {
+    this.props.getProject(this.props.match.params.project);
   }
 
   submit = model => {

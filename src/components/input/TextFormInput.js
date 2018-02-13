@@ -12,9 +12,11 @@ class TextFormInput extends Component {
     const { getValue, isValid } = this.props;
     const { label, name, required, type, multiline, fullWidth, onBlur } = this.props;
 
+    const val = getValue();
+
     return <TextField
       error={!isValid()}
-      value={getValue() || ''}
+      value={val != null ? val : ''}
       onChange={this.changeValue}
       margin="normal"
       label={label}

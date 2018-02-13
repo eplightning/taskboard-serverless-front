@@ -11,10 +11,10 @@ import { connect } from 'react-redux';
 
 class SprintContainer extends Component {
 
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+    const { match, loadBoard } = this.props;
 
-    this.props.loadBoard(props.match.params.project, props.match.params.sprint);
+    loadBoard(match.params.project, match.params.sprint);
   }
 
   makeTasks(tasks) {

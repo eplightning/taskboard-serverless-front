@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   Avatar,
   Badge,
@@ -21,7 +21,8 @@ import gravatar from 'gravatar';
 
 const styles = theme => ({
   actions: {
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    flexDirection: 'row-reverse'
   },
   smallAvatar: {
     width: 35,
@@ -62,7 +63,7 @@ const boxSource = {
   connectDragSource: connect.dragSource(),
   isDragging: monitor.isDragging(),
 }))
-class Task extends Component {
+class Task extends PureComponent {
 
   state = {
     anchorEl: null,
@@ -90,8 +91,12 @@ class Task extends Component {
 
   handleClose = () => {
     this.setState({ anchorEl: null });
-    this.props.removeTask(this.props.task.project_id, this.props.task.id);
   };
+
+  handleRemove = () => {
+    this.setState({ anchorEl: null });
+    this.props.removeTask(this.props.task.project_id, this.props.task.id);
+  }
 
   render() {
     const { connectDragSource, task, classes } = this.props;
@@ -111,6 +116,8 @@ class Task extends Component {
       </Badge>;
     }
 
+    const pointsDisplay = focused ? points : task.points;
+
     return connectDragSource(<div>
         <Card>
           <Menu
@@ -121,7 +128,7 @@ class Task extends Component {
           >
             <MenuItem component={Link}
                       to={'/tasks/edit/' + task.project_id + '/' + task.sprint_id + '/' + task.id}>Edit</MenuItem>
-            <MenuItem onClick={this.handleClose}>Remove</MenuItem>
+            <MenuItem onClick={this.handleRemove}>Remove</MenuItem>
           </Menu>
           <CardHeader
             action={
@@ -141,8 +148,7 @@ class Task extends Component {
             </Typography>
           </CardContent>
           <CardActions className={classes.actions}>
-            {userAvatar}
-            <TextField value={(focused ? points : task.points) || ''}
+            <TextField value={pointsDisplay != null ? pointsDisplay : ''}
                        className={classes.pointInput}
                        onChange={this.handleChange}
                        onFocus={this.handleFocus}
@@ -150,6 +156,7 @@ class Task extends Component {
                        type="number"
                        margin="normal"
             />
+            {userAvatar}
           </CardActions>
 
         </Card>

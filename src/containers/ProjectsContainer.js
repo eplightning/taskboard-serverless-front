@@ -6,25 +6,23 @@ import { loadProjects, loadSprints, removeProject, removeSprint } from '../redux
 
 class ProjectsContainer extends Component {
 
-  constructor(props) {
-    super(props);
-
+  componentDidMount() {
     this.props.loadProjects();
 
-    if (props.match.params.project) {
-      this.props.loadSprints(props.match.params.project);
+    if (this.props.match.params.project) {
+      this.props.loadSprints(this.props.match.params.project);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.match.params.project && this.props.match.params.project !== prevProps.match.params.project) {
+      this.props.loadSprints(this.props.match.params.project);
     }
   }
 
   canModifyProject = (project) => {
     return project.owner === this.props.email;
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.match.params.project && this.props.match.params.project !== nextProps.match.params.project) {
-      this.props.loadSprints(nextProps.match.params.project);
-    }
-  }
 
   render() {
     const { match, loadProjects, loadSprints, ...other } = this.props;

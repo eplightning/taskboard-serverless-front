@@ -4,29 +4,12 @@ import Typography from 'material-ui/Typography';
 
 import ExpansionPanel, { ExpansionPanelDetails, ExpansionPanelSummary, } from 'material-ui/ExpansionPanel';
 
-import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 
 import Icon from 'material-ui/Icon';
 
 import { Button, Dialog, DialogActions, DialogTitle, Divider, ExpansionPanelActions } from 'material-ui';
 import { Link } from 'react-router-dom';
-
-const styles = theme => ({
-  actions: {
-    justifyContent: 'space-between'
-  },
-  smallAvatar: {
-    width: 35,
-    height: 35
-  },
-  title: {
-    fontSize: 18
-  },
-  pointInput: {
-    width: 40
-  }
-});
 
 class Swimlane extends Component {
 
@@ -67,7 +50,7 @@ class Swimlane extends Component {
             </Button>
           </DialogActions>
         </Dialog>
-        <ExpansionPanel>
+        <ExpansionPanel defaultExpanded={true}>
           <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
             <Typography>{swimlane.name}</Typography>
           </ExpansionPanelSummary>
@@ -93,4 +76,4 @@ class Swimlane extends Component {
   }
 }
 
-export default withStyles(styles)(Swimlane);
+export default Swimlane;

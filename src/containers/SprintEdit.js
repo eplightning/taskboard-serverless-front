@@ -6,10 +6,8 @@ import SprintForm from '../components/SprintForm';
 
 class SprintEdit extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.props.getSprint(props.match.params.project, props.match.params.sprint);
+  componentDidMount() {
+    this.props.getSprint(this.props.match.params.project, this.props.match.params.sprint);
   }
 
   submit = model => {
@@ -20,7 +18,7 @@ class SprintEdit extends Component {
     if (this.props.loaded) {
       return <SprintForm formValues={this.props.data} submit={this.submit}/>
     } else {
-      return <Loader></Loader>;
+      return <Loader />;
     }
   }
 

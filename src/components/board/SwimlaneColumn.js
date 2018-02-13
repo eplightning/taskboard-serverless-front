@@ -5,11 +5,11 @@ import { withStyles } from 'material-ui/styles';
 
 const styles = theme => ({
   columnNormal: {
-    minHeight: 200
+    minHeight: 100
   },
   columnTaskOver: {
     background: '#ccc',
-    minHeight: 200
+    minHeight: 100
   },
   columnDropTarget: {
     width: '100%',
@@ -44,7 +44,7 @@ class SwimlaneColumn extends Component {
     return <Grid item xs={3} className={isOver ? classes.columnTaskOver : classes.columnNormal}>
       {connectDropTarget(<div className={classes.columnDropTarget}>
         <Grid container>
-          {React.Children.map(children, a => <Grid item xs={12}>{a}</Grid>)}
+          {React.Children.map(children, a => <Grid item xl={6} xs={12}>{a}</Grid>)}
         </Grid>
       </div>)}
     </Grid>;

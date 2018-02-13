@@ -6,13 +6,11 @@ import Loader from '../components/Loader';
 
 class SwimlaneEdit extends Component {
 
-  constructor(props) {
-    super(props);
-
+  componentDidMount() {
     this.props.getSwimlane(
-      props.match.params.project,
-      props.match.params.sprint,
-      props.match.params.swimlane
+      this.props.match.params.project,
+      this.props.match.params.sprint,
+      this.props.match.params.swimlane
     );
   }
 
