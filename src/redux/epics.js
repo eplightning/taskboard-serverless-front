@@ -14,8 +14,8 @@ import {
   loadProjectsDone,
   loadSprintsDone
 } from './actions/project';
-import { loadBoardDone, moveTaskDone, updatePointsDone } from './actions/board';
-import { getMembersDone } from './actions/task';
+import { loadBoardDone, moveTaskDone, updatePointsDone, loadBoard } from './actions/board';
+import { getMembersDone, removeTaskDone } from './actions/task';
 
 const loadProjectsEpic = (action$, store) => {
   return action$
@@ -145,6 +145,27 @@ const addTaskEpic = (action$, store) => {
     .catch((err) => Observable.empty())
 };
 
+const removeTaskEpic = (action$, store) => {
+  return action$
+    .ofType('TASK_REMOVE_INIT')
+    .switchMap((a) => api.delete('projects/' + a.payload.project + '/tasks/' + a.payload.id).mapTo(a.payload.id))
+    .map((task) => removeTaskDone(task))
+    .catch((err) => Observable.empty());
+};
+
+const removeSwimlaneEpic = (action$, store) => {
+  return action$
+    .ofType('SWIMLANE_REMOVE_INIT')
+    .switchMap((a) =>
+      api.delete('projects/' + a.payload.project +
+                 '/sprints/' + a.payload.sprint +
+                 '/swimlanes/' + a.payload.id)
+         .mapTo(a.payload)
+    )
+    .map((payload) => loadBoard(payload.project, payload.sprint))
+    .catch((err) => Observable.empty());
+};
+
 const authCallbackEpic = (action$, store) => {
   return action$
     .filter(a =>
@@ -204,8 +225,10 @@ export const epics = [
 
   // swimlane actions
   addSwimlaneEpic,
+  removeSwimlaneEpic,
 
   // task actions
   getMembersEpic,
-  addTaskEpic
+  addTaskEpic,
+  removeTaskEpic
 ];

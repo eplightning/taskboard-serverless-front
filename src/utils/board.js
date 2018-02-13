@@ -75,3 +75,17 @@ export function updateBoardTask(board, task) {
   return newBoard;
 }
 
+export function removeBoardTask(board, task) {
+  const newBoard = { ...board };
+
+  newBoard.tasks = { ...board.tasks };
+
+  if (task in newBoard.tasks) {
+    delete newBoard.tasks[task];
+  }
+
+  newBoard.view = calculateView(newBoard.tasks, board.swimlanes);
+
+  return newBoard;
+}
+

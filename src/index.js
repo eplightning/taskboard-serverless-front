@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import './utils/rx-operators';
 import './styles/global.scss';
-import AppContainer from './containers/AppContainer';
+import App from './containers/App';
 
 import { Provider } from 'react-redux';
 import { createReduxStore } from './utils/create-store';
@@ -19,7 +19,7 @@ import { api } from './utils/api';
 
 const history = createHistory();
 const store = createReduxStore(history);
-const AppWithDndContext = DragDropContext(HTML5Backend)(AppContainer);
+const AppWithDndContext = DragDropContext(HTML5Backend)(App);
 
 api.updateStore(store);
 
@@ -44,5 +44,3 @@ if (!auth.storageExpired()) {
 } else {
   renderApplication();
 }
-
-

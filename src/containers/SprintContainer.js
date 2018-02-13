@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Board from '../components/board/Board';
 import { loadBoard, moveTask, updatePoints } from '../redux/actions/board';
+import { removeTask } from '../redux/actions/task';
+import { removeSwimlane } from '../redux/actions/swimlane';
 import Loader from '../components/Loader';
 import Swimlane from '../components/board/Swimlane';
 import SwimlaneColumn from '../components/board/SwimlaneColumn';
@@ -17,7 +19,8 @@ class SprintContainer extends Component {
 
   makeTasks(tasks) {
     return tasks.map(task =>
-      <Task task={task} key={task.id} moveTask={this.props.moveTask} updatePoints={this.props.updatePoints} />
+      <Task task={task} key={task.id} removeTask={this.props.removeTask}
+            moveTask={this.props.moveTask} updatePoints={this.props.updatePoints} />
     );
   }
 
@@ -46,7 +49,11 @@ class SprintContainer extends Component {
         </React.Fragment>
       );
 
-      return <Swimlane key={swimlaneWithTasks.swimlane.id} swimlane={swimlaneWithTasks.swimlane}>{tasks}</Swimlane>
+      return <Swimlane key={swimlaneWithTasks.swimlane.id}
+                       removeSwimlane={this.props.removeSwimlane}
+                       swimlane={swimlaneWithTasks.swimlane}>
+        {tasks}
+      </Swimlane>;
     });
 
     return <Board projectId={match.params.project} sprintId={match.params.sprint} totals={board.headers}>
@@ -59,4 +66,4 @@ class SprintContainer extends Component {
 export default connect((state) => ({
   board: state.sprint.board.view,
   loaded: state.sprint.loaded
-}), { loadBoard, moveTask, updatePoints })(SprintContainer);
+}), { loadBoard, moveTask, updatePoints, removeTask, removeSwimlane })(SprintContainer);

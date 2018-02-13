@@ -90,11 +90,12 @@ class Task extends Component {
 
   handleClose = () => {
     this.setState({ anchorEl: null });
+    this.props.removeTask(this.props.task.project_id, this.props.task.id);
   };
 
   render() {
     const { isDragging, connectDragSource, task } = this.props;
-    const { classes } = this.props;
+    const { classes, removeTask } = this.props;
     const { anchorEl, focused, points } = this.state;
 
     let userAvatar = null;

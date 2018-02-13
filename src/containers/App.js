@@ -1,21 +1,19 @@
 import React, { Component } from 'react';
 
 import '../styles/App.scss';
-import Header from './Header';
-import SprintContainer from '../containers/SprintContainer';
+import Header from '../components/Header';
+import SprintContainer from './SprintContainer';
 import { Route, Switch } from 'react-router-dom';
-import RequireAuth from '../containers/RequireAuth';
-import Home from './Home';
+import RequireAuth from './RequireAuth';
+import Home from '../components/Home';
 import { Reboot } from 'material-ui';
-import SwimlaneForm from './SwimlaneForm';
-import TaskForm from './TaskForm';
-import ProjectsContainer from '../containers/ProjectsContainer';
-import ProjectAdd from '../containers/ProjectAdd';
-import ProjectEdit from '../containers/ProjectEdit';
-import SprintAdd from '../containers/SprintAdd';
-import SprintEdit from '../containers/SprintEdit';
-import SwimlaneAdd from '../containers/SwimlaneAdd';
-import TaskAdd from '../containers/TaskAdd';
+import ProjectsContainer from './ProjectsContainer';
+import ProjectAdd from './ProjectAdd';
+import ProjectEdit from './ProjectEdit';
+import SprintAdd from './SprintAdd';
+import SprintEdit from './SprintEdit';
+import SwimlaneAdd from './SwimlaneAdd';
+import TaskAdd from './TaskAdd';
 
 const AuthProtected = () => {
   return <RequireAuth>
@@ -28,9 +26,9 @@ const AuthProtected = () => {
       <Route exact path="/sprints/edit/:project/:sprint" component={SprintEdit}/>
       <Route exact path="/sprints/board/:project/:sprint" component={SprintContainer}/>
       <Route exact path="/swimlanes/add/:project/:sprint" component={SwimlaneAdd}/>
-      <Route exact path="/swimlanes/edit/:project/:sprint/:swimlane" component={SwimlaneForm}/>
+      <Route exact path="/swimlanes/edit/:project/:sprint/:swimlane" component={SwimlaneAdd}/>
       <Route exact path="/tasks/add/:project/:sprint/:swimlane" component={TaskAdd}/>
-      <Route exact path="/tasks/edit/:project/:sprint/:task" component={TaskForm}/>
+      <Route exact path="/tasks/edit/:project/:sprint/:task" component={TaskAdd}/>
     </Switch>
   </RequireAuth>;
 };

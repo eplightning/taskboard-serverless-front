@@ -34,3 +34,21 @@ export function addTask(project, task) {
   }
 }
 
+export function removeTask(project, id) {
+  return {
+    type: 'TASK_REMOVE_INIT',
+    payload: {
+      project: project,
+      id: id
+    }
+  }
+}
+
+export function removeTaskDone(id) {
+  return {
+    type: 'TASK_REMOVE_DONE',
+    payload: {
+      id: id
+    }
+  }
+}

@@ -49,6 +49,10 @@ class Swimlane extends Component {
 
   handleRemovalClick = (remove) => {
     this.setState({ removeDialog: false });
+
+    if (remove) {
+      this.props.removeSwimlane(this.props.swimlane.project_id, this.props.swimlane.sprint_id, this.props.swimlane.id);
+    }
   };
 
   render() {
