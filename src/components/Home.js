@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Button, Typography } from 'material-ui';
+import { Button } from 'material-ui';
 import '../styles/Home.scss';
 import { Link } from 'react-router-dom';
 

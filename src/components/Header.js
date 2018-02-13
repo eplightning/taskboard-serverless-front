@@ -54,6 +54,7 @@ class Header extends Component {
 
   logout = () => {
     this.setState({ anchorEl: null });
+    this.props.logoutUser();
   };
 
   handleDrawerOpen = () => {
@@ -65,14 +66,11 @@ class Header extends Component {
   };
 
   render() {
-    const { classes, title, signedIn, email, activeProject } = this.props;
+    const { classes, title, signedIn, email, projects, sprints } = this.props;
     const { anchorEl, drawerOpen } = this.state;
     const menuOpen = !!anchorEl;
 
-    const projects = this.props.projects || [];
-    const sprints = this.props.sprints || [];
-
-    const projectsList = projects.map(a =>
+    const projectsList = projects.slice(0, 3).map(a =>
       <ListItem button component={Link} to={'/projects/view/' + a.id} key={a.id}>
         <ListItemIcon>
           <Avatar>{a.name.charAt(0)}</Avatar>
@@ -81,8 +79,8 @@ class Header extends Component {
       </ListItem>
     );
 
-    const sprintsList = sprints.map(a =>
-      <ListItem button component={Link} to={'/sprints/board/' + activeProject + '/' + a.id} key={a.id}>
+    const sprintsList = sprints.slice(0, 3).map(a =>
+      <ListItem button component={Link} to={'/sprints/board/' + a.project_id + '/' + a.id} key={a.id}>
         <ListItemText primary={a.name} />
       </ListItem>
     );

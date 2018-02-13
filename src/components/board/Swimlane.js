@@ -31,16 +31,7 @@ const styles = theme => ({
 class Swimlane extends Component {
 
   state = {
-    anchorEl: null,
     removeDialog: false
-  };
-
-  handleClick = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
-
-  handleClose = () => {
-    this.setState({ anchorEl: null });
   };
 
   confirmRemoval = () => {
@@ -57,8 +48,7 @@ class Swimlane extends Component {
 
   render() {
     const { removeDialog } = this.state;
-    const { classes, children, swimlane } = this.props;
-    const { anchorEl } = this.state;
+    const { children, swimlane } = this.props;
 
     return (
       <React.Fragment>

@@ -16,6 +16,10 @@ class ProjectsContainer extends Component {
     }
   }
 
+  canModifyProject = (project) => {
+    return project.owner === this.props.email;
+  };
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.match.params.project && this.props.match.params.project !== nextProps.match.params.project) {
       this.props.loadSprints(nextProps.match.params.project);
@@ -25,12 +29,13 @@ class ProjectsContainer extends Component {
   render() {
     const { match, loadProjects, loadSprints, ...other } = this.props;
 
-    return <ProjectsView activeProject={match.params.project} {...other} />
+    return <ProjectsView canModifyProject={this.canModifyProject} activeProject={match.params.project} {...other} />
   }
 
 }
 
 export default connect((state) => ({
   projects: state.project.projects,
-  sprints: state.project.sprints
+  sprints: state.project.sprints,
+  email: state.user.profile.email
 }), { removeProject, removeSprint, loadProjects, loadSprints })(ProjectsContainer);

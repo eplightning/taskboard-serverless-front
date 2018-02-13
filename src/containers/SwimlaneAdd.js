@@ -6,7 +6,7 @@ import { addSwimlane } from '../redux/actions/swimlane';
 class SwimlaneAdd extends Component {
 
   submit = model => {
-    const points = model.points != null ? parseInt(model.points) : null;
+    const points = model.points != null ? parseInt(model.points, 10) : null;
 
     this.props.addSwimlane(this.props.match.params.project, this.props.match.params.sprint, {
       ...model,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withFormsy } from 'formsy-react';
-import { Select, Input, MenuItem, InputLabel, FormControl } from 'material-ui';
+import { Select, MenuItem, InputLabel, FormControl } from 'material-ui';
 class AssignedUserInput extends Component {
 
   changeValue = (event) => {

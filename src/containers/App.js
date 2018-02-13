@@ -13,7 +13,11 @@ import ProjectEdit from './ProjectEdit';
 import SprintAdd from './SprintAdd';
 import SprintEdit from './SprintEdit';
 import SwimlaneAdd from './SwimlaneAdd';
+import SwimlaneEdit from './SwimlaneEdit';
 import TaskAdd from './TaskAdd';
+import TaskEdit from './TaskEdit';
+import { connect } from 'react-redux';
+import { userLogout } from '../redux/actions/user';
 
 const AuthProtected = () => {
   return <RequireAuth>
@@ -26,9 +30,9 @@ const AuthProtected = () => {
       <Route exact path="/sprints/edit/:project/:sprint" component={SprintEdit}/>
       <Route exact path="/sprints/board/:project/:sprint" component={SprintContainer}/>
       <Route exact path="/swimlanes/add/:project/:sprint" component={SwimlaneAdd}/>
-      <Route exact path="/swimlanes/edit/:project/:sprint/:swimlane" component={SwimlaneAdd}/>
+      <Route exact path="/swimlanes/edit/:project/:sprint/:swimlane" component={SwimlaneEdit}/>
       <Route exact path="/tasks/add/:project/:sprint/:swimlane" component={TaskAdd}/>
-      <Route exact path="/tasks/edit/:project/:sprint/:task" component={TaskAdd}/>
+      <Route exact path="/tasks/edit/:project/:sprint/:task" component={TaskEdit}/>
     </Switch>
   </RequireAuth>;
 };
@@ -36,38 +40,12 @@ const AuthProtected = () => {
 class App extends Component {
 
   render() {
-    const projects = [
-      {
-        id: 'test',
-        name: 'eLF Konfigurator'
-      },
-      {
-        id: 'test2',
-        name: 'Inny'
-      }
-    ];
-
-    const sprints = [
-      {
-        id: 'test',
-        project: 'project',
-        name: 'Sprints 18',
-        startDate: '2018-01-01',
-        endDate: '2018-02-02'
-      },
-      {
-        id: 'test2',
-        project: 'project',
-        name: 'Sprints 17',
-        startDate: '2018-01-01',
-        endDate: '2018-02-02'
-      },
-    ];
+    const { sprints, projects, signedIn, email, userLogout } = this.props;
 
     return (
       <Reboot>
-        <Header sprints={sprints}
-                projects={projects} signedIn={true} email="wrexdot@gmail.com"></Header>
+        <Header sprints={sprints} userLogout={userLogout}
+                projects={projects} signedIn={signedIn} email={email} />
         <Switch>
           <Route exact path="/" component={Home}/>
           <Route component={AuthProtected}/>
@@ -78,4 +56,9 @@ class App extends Component {
 
 }
 
-export default App;
+export default connect(state => ({
+  signedIn: state.user.signedIn,
+  email: state.user.profile.email,
+  projects: state.project.projects,
+  sprints: state.project.sprints
+}), { userLogout })(App);

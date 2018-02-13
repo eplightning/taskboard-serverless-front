@@ -41,6 +41,12 @@ const formReducer = createReducer(initialStateTree.form, {
   'SPRINT_GET_INIT': (state, action) => ({ ...state, data: {}, loaded: false }),
   'SPRINT_GET_DONE': (state, action) => ({ ...state, data: action.payload.data, loaded: true }),
   'SPRINT_EDIT_DONE': (state, action) => ({ ...state, data: {}, loaded: false }),
+  'SWIMLANE_GET_INIT': (state, action) => ({ ...state, data: {}, loaded: false }),
+  'SWIMLANE_GET_DONE': (state, action) => ({ ...state, data: action.payload.data, loaded: true }),
+  'SWIMLANE_EDIT_DONE': (state, action) => ({ ...state, data: {}, loaded: false }),
+  'TASK_GET_INIT': (state, action) => ({ ...state, data: {}, loaded: false }),
+  'TASK_GET_DONE': (state, action) => ({ ...state, data: action.payload.data, loaded: true }),
+  'TASK_EDIT_DONE': (state, action) => ({ ...state, data: {}, loaded: false }),
   'TASK_MEMBERS_GET_DONE': (state, action) => ({ ...state, members: action.payload.members, membersLoaded: true }),
   'TASK_MEMBERS_GET_INIT': (state, action) => ({ ...state, members: [], membersLoaded: false }),
 });

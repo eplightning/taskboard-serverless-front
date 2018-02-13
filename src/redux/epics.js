@@ -15,7 +15,8 @@ import {
   loadSprintsDone
 } from './actions/project';
 import { loadBoardDone, moveTaskDone, updatePointsDone, loadBoard } from './actions/board';
-import { getMembersDone, removeTaskDone } from './actions/task';
+import { getMembersDone, removeTaskDone, getTaskDone, editTaskDone } from './actions/task';
+import { getSwimlaneDone, editSwimlaneDone } from './actions/swimlane';
 
 const loadProjectsEpic = (action$, store) => {
   return action$
@@ -166,6 +167,50 @@ const removeSwimlaneEpic = (action$, store) => {
     .catch((err) => Observable.empty());
 };
 
+const getTaskEpic = (action$, store) => {
+  return action$
+    .ofType('TASK_GET_INIT')
+    .switchMap((a) => api.get('projects/' + a.payload.project + '/tasks/' + a.payload.id))
+    .map(response => getTaskDone(response))
+    .catch((err) => Observable.of(getTaskDone(null, err)));
+};
+
+const editTaskEpic = (action$, store) => {
+  return action$
+    .ofType('TASK_EDIT_INIT')
+    .switchMap((a) => api.put('projects/' + a.payload.project + '/tasks/' + a.payload.id, a.payload.data))
+    .switchMap(task => Observable.of(
+      push('/sprints/board/' + task.project_id + '/' + task.sprint_id), editTaskDone(task)
+    ))
+    .catch((err) => Observable.of(editTaskDone(null, err)));
+};
+
+const getSwimlaneEpic = (action$, store) => {
+  return action$
+    .ofType('SWIMLANE_GET_INIT')
+    .switchMap((a) =>
+      api.get('projects/' + a.payload.project +
+              '/sprints/' + a.payload.sprint +
+              '/swimlanes/' + a.payload.id)
+    )
+    .map(response => getSwimlaneDone(response))
+    .catch((err) => Observable.of(getSwimlaneDone(null, err)));
+};
+
+const editSwimlaneEpic = (action$, store) => {
+  return action$
+    .ofType('SWIMLANE_EDIT_INIT')
+    .switchMap((a) =>
+      api.put('projects/' + a.payload.project +
+      '/sprints/' + a.payload.sprint +
+      '/swimlanes/' + a.payload.id, a.payload.data)
+    )
+    .switchMap(swimlane => Observable.of(
+      push('/sprints/board/' + swimlane.project_id + '/' + swimlane.sprint_id), editSwimlaneDone(swimlane)
+    ))
+    .catch((err) => Observable.of(editSwimlaneDone(null, err)));
+};
+
 const authCallbackEpic = (action$, store) => {
   return action$
     .filter(a =>
@@ -226,9 +271,13 @@ export const epics = [
   // swimlane actions
   addSwimlaneEpic,
   removeSwimlaneEpic,
+  editSwimlaneEpic,
+  getSwimlaneEpic,
 
   // task actions
   getMembersEpic,
   addTaskEpic,
-  removeTaskEpic
+  removeTaskEpic,
+  getTaskEpic,
+  editTaskEpic
 ];

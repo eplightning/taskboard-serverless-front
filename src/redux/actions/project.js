@@ -221,7 +221,7 @@ export function getSprintDone(project, error) {
   }
 
   return {
-    type: 'PROJECT_GET_DONE',
+    type: 'SPRINT_GET_DONE',
     payload: {
       data: project
     }

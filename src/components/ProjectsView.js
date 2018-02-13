@@ -76,7 +76,7 @@ class ProjectsView extends Component {
 
   render() {
     const { anchorEl, menuProject, menuSprint, dialogOpen } = this.state;
-    const { classes, activeProject, projects, sprints } = this.props;
+    const { classes, activeProject, projects, sprints, canModifyProject } = this.props;
 
     const projectsList = projects.map(a =>
       <ListItem button className={activeProject === a.id ? classes.selected : null} component={Link}
@@ -85,11 +85,12 @@ class ProjectsView extends Component {
           <Avatar>{a.name.charAt(0)}</Avatar>
         </ListItemIcon>
         <ListItemText primary={a.name} className={classes.primary}/>
+        {canModifyProject(a) &&
         <ListItemSecondaryAction className={activeProject === a.id ? classes.selected : null}>
           <IconButton aria-label="Edit" onClick={this.handleClick(a.id)} className={classes.icon}>
             <Icon>more_vert</Icon>
           </IconButton>
-        </ListItemSecondaryAction>
+        </ListItemSecondaryAction>}
       </ListItem>
     );
 

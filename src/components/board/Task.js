@@ -81,7 +81,7 @@ class Task extends Component {
   handleBlur = () => {
     const points = this.state.points;
     this.setState({ points: '', focused: false});
-    this.props.updatePoints(this.props.task, points != null && points !== '' ? parseInt(points) : null);
+    this.props.updatePoints(this.props.task, points != null && points !== '' ? parseInt(points, 10) : null);
   };
 
   handleClick = event => {
@@ -94,8 +94,7 @@ class Task extends Component {
   };
 
   render() {
-    const { isDragging, connectDragSource, task } = this.props;
-    const { classes, removeTask } = this.props;
+    const { connectDragSource, task, classes } = this.props;
     const { anchorEl, focused, points } = this.state;
 
     let userAvatar = null;

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/Home.scss';
-import { TextField, withStyles, Toolbar, Button } from 'material-ui';
-import { Link } from 'react-router-dom';
+import { withStyles, Toolbar, Button } from 'material-ui';
 import Formsy from 'formsy-react';
 import TextFormInput from './input/TextFormInput';
 import UserSelectInput from './input/UserSelectInput';

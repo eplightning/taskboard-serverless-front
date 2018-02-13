@@ -25,7 +25,7 @@ class SprintContainer extends Component {
   }
 
   render() {
-    const { match, loaded, board, moveTask, ...other } = this.props;
+    const { match, loaded, board } = this.props;
 
     if (!loaded) {
       return <Loader/>;

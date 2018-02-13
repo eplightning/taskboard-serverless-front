@@ -1,27 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TaskForm from '../components/TaskForm';
-import { addTask, getMembers } from '../redux/actions/task';
+import { editTask, getMembers, getTask } from '../redux/actions/task';
 import Loader from '../components/Loader';
 
-class TaskAdd extends Component {
+class TaskEdit extends Component {
 
   constructor(props) {
     super(props);
 
     this.props.getMembers(props.match.params.project);
+    this.props.getTask(props.match.params.project, props.match.params.task);
   }
 
   submit = model => {
     const points = model.points != null ? parseInt(model.points, 10) : null;
     const plannedPoints = model.planned_points != null ? parseInt(model.planned_points, 10) : null;
 
-    this.props.addTask(this.props.match.params.project, {
+    this.props.editTask(this.props.match.params.project, this.props.match.params.task, {
       ...model,
       points: points,
       planned_points: plannedPoints,
-      sprint_id: this.props.match.params.sprint,
-      swimlane_id: this.props.match.params.swimlane
+      sprint_id: this.props.data.sprint_id,
+      swimlane_id: this.props.data.swimlane_ud
     });
   };
 
@@ -31,12 +32,12 @@ class TaskAdd extends Component {
     }
 
     const formValues = {
-      name: '',
-      description: '',
-      points: null,
-      planned_points: null,
-      state: 'new',
-      assigned_members: []
+      name: this.props.data.name,
+      description: this.props.data.description,
+      points: this.props.data.points,
+      planned_points: this.props.data.planned_points,
+      state: this.props.data.state,
+      assigned_members: this.props.data.assigned_members
     };
 
     return <TaskForm formValues={formValues} submit={this.submit} members={this.props.members}/>
@@ -45,6 +46,7 @@ class TaskAdd extends Component {
 }
 
 export default connect(state => ({
-  loaded: state.form.membersLoaded,
-  members: state.form.members
-}), { getMembers, addTask })(TaskAdd);
+  loaded: state.form.membersLoaded && state.form.loaded,
+  members: state.form.members,
+  data: state.form.data
+}), { getMembers, editTask, getTask })(TaskEdit);

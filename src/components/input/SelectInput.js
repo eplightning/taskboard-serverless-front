@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withFormsy } from 'formsy-react';
-import { Select, Input, InputLabel, FormControl } from 'material-ui';
+import { Select, InputLabel, FormControl } from 'material-ui';
 
 class SelectInput extends Component {
 

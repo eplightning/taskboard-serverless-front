@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withFormsy } from 'formsy-react';
-import { Grid, TextField, Chip, Typography, FormLabel, FormControl, FormGroup, Button, Icon } from 'material-ui';
+import { Grid, TextField, Chip, FormLabel, FormControl, Button } from 'material-ui';
 
 import '../../styles/UserSelectInput.scss'
 
@@ -47,7 +47,7 @@ class UserSelectInput extends Component {
   }
 
   render() {
-    const { getValue, getErrorMessage, isValid, value, label, ...other } = this.props;
+    const { getValue, label } = this.props;
     const { email } = this.state;
 
     return <div className="userSelectControl">
