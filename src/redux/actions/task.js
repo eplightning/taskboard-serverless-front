@@ -107,3 +107,24 @@ export function getTaskDone(task, error) {
     }
   }
 }
+
+export function uploadAttachment(project, task, file) {
+  return {
+    type: 'ATTACHMENT_UPLOAD_INIT',
+    payload: {
+      project: project,
+      task: task,
+      file: file
+    }
+  }
+}
+
+export function uploadAttachmentDone(project, task) {
+  return {
+    type: 'ATTACHMENT_UPLOAD_DONE',
+    payload: {
+      project: project,
+      task: task
+    }
+  }
+}

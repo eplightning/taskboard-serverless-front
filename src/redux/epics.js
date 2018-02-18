@@ -15,7 +15,7 @@ import {
   loadSprintsDone
 } from './actions/project';
 import { loadBoardDone, moveTaskDone, updatePointsDone, loadBoard } from './actions/board';
-import { getMembersDone, removeTaskDone, getTaskDone, editTaskDone } from './actions/task';
+import { getMembersDone, getTask, removeTaskDone, getTaskDone, editTaskDone, uploadAttachmentDone } from './actions/task';
 import { getSwimlaneDone, editSwimlaneDone } from './actions/swimlane';
 
 const loadProjectsEpic = (action$, store) => {
@@ -211,6 +211,52 @@ const editSwimlaneEpic = (action$, store) => {
     .catch((err) => Observable.of(editSwimlaneDone(null, err)));
 };
 
+const uploadAttachmentEpic = (action$, store) => {
+  return action$
+    .ofType('ATTACHMENT_UPLOAD_INIT')
+    .switchMap((a) => {
+      let url = 'projects/' + a.payload.project + '/tasks/' + a.payload.task + '/upload';
+      url += '?filename=' + encodeURIComponent(a.payload.file.name);
+
+      return api.get(url)
+        .map((response) => {
+          return { ...response, ...a.payload };
+        });
+    })
+    .switchMap((data) => {
+      const body = new FormData();
+
+      for (const k in data.fields) {
+        if (data.fields.hasOwnProperty(k)) {
+          const v = data.fields[k];
+
+          body.set(k, v);
+        }
+      }
+
+      body.set('file', data.file);
+
+      return Observable.ajax({
+        url: data.url,
+        method: 'POST',
+        crossDomain: true,
+        body: body
+      }).mapTo({ project: data.project, task: data.task });
+    })
+    .delay(2000)
+    .map((a) => uploadAttachmentDone(a.project, a.task))
+    .catch((err) => {
+      console.error(err);
+      return Observable.empty()
+    });
+}
+
+const uploadAttachmentDoneEpic = (action$, store) => {
+  return action$
+    .ofType('ATTACHMENT_UPLOAD_DONE')
+    .map((a) => getTask(a.payload.project, a.payload.task));
+}
+
 const authCallbackEpic = (action$, store) => {
   return action$
     .filter(a =>
@@ -279,5 +325,7 @@ export const epics = [
   addTaskEpic,
   removeTaskEpic,
   getTaskEpic,
-  editTaskEpic
+  editTaskEpic,
+  uploadAttachmentEpic,
+  uploadAttachmentDoneEpic
 ];

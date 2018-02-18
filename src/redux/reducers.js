@@ -11,7 +11,8 @@ const initialStateTree = {
     data: {},
     loaded: false,
     members: [],
-    membersLoaded: false
+    membersLoaded: false,
+    uploading: false
   },
   sprint: {
     loaded: false,
@@ -49,6 +50,8 @@ const formReducer = createReducer(initialStateTree.form, {
   'TASK_EDIT_DONE': (state, action) => ({ ...state, data: {}, loaded: false }),
   'TASK_MEMBERS_GET_DONE': (state, action) => ({ ...state, members: action.payload.members, membersLoaded: true }),
   'TASK_MEMBERS_GET_INIT': (state, action) => ({ ...state, members: [], membersLoaded: false }),
+  'ATTACHMENT_UPLOAD_INIT': (state, action) => ({ ...state, uploading: true }),
+  'ATTACHMENT_UPLOAD_DONE': (state, action) => ({ ...state, uploading: false })
 });
 
 const projectReducer = createReducer(initialStateTree.project, {

@@ -5,12 +5,25 @@ import Formsy from 'formsy-react';
 import TextFormInput from './input/TextFormInput';
 import SelectInput from './input/SelectInput';
 import AssignedUserInput from './input/AssignedUserInput'
+import { DropTarget } from 'react-dnd';
+import { NativeTypes } from 'react-dnd-html5-backend';
+import Loader from './Loader';
 
 const styles = theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
     padding: [[0, '20px']]
+  },
+  uploadBox: {
+    width: '100%',
+    height: 200,
+    background: 'red'
+  },
+  uploadBoxOver: {
+    width: '100%',
+    height: 200,
+    background: 'blue'
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -28,6 +41,20 @@ const styles = theme => ({
   },
 });
 
+const taskTarget = {
+  canDrop(props, monitor) {
+    return true;
+  },
+
+  drop(props, monitor, component) {
+    props.uploadAttachment(monitor.getItem().files[0]);
+  }
+};
+
+@DropTarget(NativeTypes.FILE, taskTarget, (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver()
+}))
 class TaskForm extends Component {
 
   state = {
@@ -52,64 +79,82 @@ class TaskForm extends Component {
   };
 
   render() {
-    const { classes, submit, formValues, members } = this.props;
+    const { classes, submit, formValues, members, attachments, isOver, connectDropTarget, uploading } = this.props;
     const { valid, defaultPoints } = this.state;
 
-    return <Formsy onValidSubmit={submit} onValid={this.handleValid} onInvalid={this.handleInvalid} ref="form">
-      <Toolbar className={classes.toolbar}>
-        <Button disabled={!valid} variant="raised" color="primary" type="submit">
-          Save
-        </Button>
-      </Toolbar>
-      <div className={classes.container}>
-        <SelectInput
-          label="State"
-          name="state"
-          value={formValues.state}>
-          <option value="new">New</option>
-          <option value="in_progress">In progress</option>
-          <option value="done">Done</option>
-          <option value="blocked">Blocked</option>
-        </SelectInput>
-        <TextFormInput
-          label="Task title"
-          name="name"
-          value={formValues.name}
-          required
-        />
-        <TextFormInput
-          label="Description"
-          name="description"
-          value={formValues.description}
-          multiline
-        />
-        <div className={classes.inputDivFull}>
+    return <React.Fragment>
+      <Formsy onValidSubmit={submit} onValid={this.handleValid} onInvalid={this.handleInvalid} ref="form">
+        <Toolbar className={classes.toolbar}>
+          <Button disabled={!valid} variant="raised" color="primary" type="submit">
+            Save
+          </Button>
+        </Toolbar>
+        <div className={classes.container}>
+          <SelectInput
+            label="State"
+            name="state"
+            value={formValues.state}>
+            <option value="new">New</option>
+            <option value="in_progress">In progress</option>
+            <option value="done">Done</option>
+            <option value="blocked">Blocked</option>
+          </SelectInput>
           <TextFormInput
-            type="number"
-            label="Planned points"
-            name="planned_points"
-            fullWidth={false}
-            value={formValues.planned_points}
-            onBlur={this.handlePointsBlur}
+            label="Task title"
+            name="name"
+            value={formValues.name}
+            required
+          />
+          <TextFormInput
+            label="Description"
+            name="description"
+            value={formValues.description}
+            multiline
+          />
+          <div className={classes.inputDivFull}>
+            <TextFormInput
+              type="number"
+              label="Planned points"
+              name="planned_points"
+              fullWidth={false}
+              value={formValues.planned_points}
+              onBlur={this.handlePointsBlur}
+            />
+          </div>
+          <div className={classes.inputDivFull}>
+            <TextFormInput
+              type="number"
+              label="Points"
+              name="points"
+              fullWidth={false}
+              value={defaultPoints || formValues.points}
+            />
+          </div>
+          <AssignedUserInput
+            label="Assigned members"
+            name="assigned_members"
+            options={members}
+            value={formValues.assigned_members}
           />
         </div>
-        <div className={classes.inputDivFull}>
-          <TextFormInput
-            type="number"
-            label="Points"
-            name="points"
-            fullWidth={false}
-            value={defaultPoints || formValues.points}
-          />
-        </div>
-        <AssignedUserInput
-          label="Assigned members"
-          name="assigned_members"
-          options={members}
-          value={formValues.assigned_members}
-        />
+      </Formsy>
+      <div>
+        {attachments.map((attachment) => {
+          const fragments = attachment.split('/');
+          const url = process.env.REACT_APP_UPLOAD_URL + attachment;
+          return <a href={url} key={attachment}>{fragments[3]}</a>;
+        })}
       </div>
-    </Formsy>;
+      {uploading || connectDropTarget(
+        <div className={isOver ? classes.uploadBoxOver : classes.uploadBox}>
+        </div>
+      )}
+      {uploading && (
+        <div className={classes.uploadBox}>
+          <Loader />
+        </div>
+      )}
+    </React.Fragment>;
   }
 
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TaskForm from '../components/TaskForm';
-import { editTask, getMembers, getTask } from '../redux/actions/task';
+import { editTask, getMembers, getTask, uploadAttachment } from '../redux/actions/task';
 import Loader from '../components/Loader';
 
 class TaskEdit extends Component {
@@ -24,10 +24,16 @@ class TaskEdit extends Component {
     });
   };
 
+  uploadAttachment = (file) => {
+    this.props.uploadAttachment(this.props.match.params.project, this.props.match.params.task, file);
+  };
+
   render() {
     if (!this.props.loaded) {
       return <Loader/>;
     }
+
+    const { uploading } = this.props;
 
     const formValues = {
       name: this.props.data.name,
@@ -38,7 +44,9 @@ class TaskEdit extends Component {
       assigned_members: this.props.data.assigned_members
     };
 
-    return <TaskForm formValues={formValues} submit={this.submit} members={this.props.members}/>
+    return <TaskForm formValues={formValues} uploadAttachment={this.uploadAttachment} uploading={uploading}
+                     attachments={this.props.data.attachments}
+                     submit={this.submit} members={this.props.members} />
   }
 
 }
@@ -46,5 +54,6 @@ class TaskEdit extends Component {
 export default connect(state => ({
   loaded: state.form.membersLoaded && state.form.loaded,
   members: state.form.members,
-  data: state.form.data
-}), { getMembers, editTask, getTask })(TaskEdit);
+  data: state.form.data,
+  uploading: state.form.uploading
+}), { getMembers, editTask, getTask, uploadAttachment })(TaskEdit);
