@@ -1,13 +1,25 @@
 import React, { Component } from 'react';
 import '../styles/Home.scss';
-import { Button, Toolbar, withStyles } from 'material-ui';
+import {
+  Avatar,
+  Button,
+  CircularProgress,
+  Grid,
+  Icon,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Toolbar,
+  Typography,
+  withStyles
+} from 'material-ui';
 import Formsy from 'formsy-react';
 import TextFormInput from './input/TextFormInput';
 import SelectInput from './input/SelectInput';
 import AssignedUserInput from './input/AssignedUserInput'
 import { DropTarget } from 'react-dnd';
 import { NativeTypes } from 'react-dnd-html5-backend';
-import Loader from './Loader';
 
 const styles = theme => ({
   container: {
@@ -17,13 +29,18 @@ const styles = theme => ({
   },
   uploadBox: {
     width: '100%',
-    height: 200,
-    background: 'red'
+    textAlign: 'center',
+    padding: [['100px', 0]]
+  },
+  uploadIcon: {
+    width: 256,
+    height: 256
   },
   uploadBoxOver: {
     width: '100%',
-    height: 200,
-    background: 'blue'
+    textAlign: 'center',
+    background: '#eee',
+    padding: [['100px', 0]]
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -138,22 +155,48 @@ class TaskForm extends Component {
           />
         </div>
       </Formsy>
-      <div>
-        {attachments.map((attachment) => {
-          const fragments = attachment.split('/');
-          const url = process.env.REACT_APP_UPLOAD_URL + attachment;
-          return <a href={url} key={attachment}>{fragments[3]}</a>;
-        })}
+      {attachments != null &&
+      <div className={classes.container}>
+        <Typography>
+          <h2>Attachments</h2>
+        </Typography>
+        <Grid container spacing={16}>
+          <Grid item xs={12}>
+            <Paper>
+              <List>
+                {attachments.map((attachment) => {
+                  const fragments = attachment.split('/');
+                  const url = process.env.REACT_APP_UPLOAD_URL + attachment;
+
+                  return <ListItem key={fragments[2]} component="a" href={url}>
+                    <Avatar>
+                      <Icon>folder</Icon>
+                    </Avatar>
+                    <ListItemText primary={fragments[3]}/>
+                  </ListItem>;
+                })}
+              </List>
+            </Paper>
+          </Grid>
+          <Grid item xs={12}>
+            {uploading || connectDropTarget(
+              <div>
+                <Paper className={isOver ? classes.uploadBoxOver : classes.uploadBox}>
+                  <Icon>backup</Icon>
+                </Paper>
+              </div>
+            )}
+            {uploading && (
+              <div>
+                <Paper className={classes.uploadBox}>
+                  <CircularProgress size={50}></CircularProgress>
+                </Paper>
+              </div>
+            )}
+          </Grid>
+        </Grid>
       </div>
-      {uploading || connectDropTarget(
-        <div className={isOver ? classes.uploadBoxOver : classes.uploadBox}>
-        </div>
-      )}
-      {uploading && (
-        <div className={classes.uploadBox}>
-          <Loader />
-        </div>
-      )}
+      }
     </React.Fragment>;
   }
 
